@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <stdio.h>
 #include "list.h"
 
 void list_init(struct list *list)
@@ -92,4 +93,19 @@ struct list *list_find(struct list *list, int value)
     }
 
     return NULL;
+}
+
+void print_list(struct list *list)
+{
+    if (list_is_empty(list) == 1){
+        printf("Empty list\n");
+        return;
+    }
+
+    while (list->next != NULL)
+    {
+        printf("%d ", list->data);
+        list = list->next;
+    }
+    printf("\n");
 }

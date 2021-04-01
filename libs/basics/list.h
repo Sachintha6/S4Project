@@ -17,4 +17,6 @@ int list_pop(struct list *list);
 void list_insert(struct list *list, int value, int place);
 struct list *list_find(struct list *list, int value);
 
+void print_list(struct list *list);
+
 #endif
