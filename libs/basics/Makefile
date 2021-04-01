@@ -1,24 +1,14 @@
-CPPFLAGS = -MMD
 CC = gcc
 CFLAGS = -Wall -Wextra
-LDFLAGS =
-LDLIBS =
 
-SRC = test.c graph.c list.c
-OBJ = ${SRC:.c=.o}
-DEP = ${SRC:.c=.d}
+all: test
 
-all: graph_test
-
-graph_test: test.o list.o graph.o
-
--include ${DEP}
+test: test.o graph.o list.o
+test.o: test.c graph.h list.h
+graph.o: graph.c graph.h list.h
+list.o: list.c list.h
 
 .PHONY: clean
 
 clean:
-	${RM} ${OBJ}
-	${RM} ${DEP}
-	${RM} graph_test
-
-# END
+	${RM} test test.o graph.o list.o
