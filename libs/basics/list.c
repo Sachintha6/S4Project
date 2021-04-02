@@ -31,7 +31,7 @@ int list_len(struct list *list)
 
 void list_push(struct list *list, int value)
 {
-    struct list *new;
+    struct list *new = (struct list*)malloc(sizeof(struct list));
     new->data = value;
     new->next = list->next;
     list->next = new;
@@ -54,28 +54,60 @@ int list_pop(struct list *list)
 
 void list_insert(struct list *list, int value, int place)
 {
-    // Default: logical place in sorted list
-    if (place < 0){
-        while (list->next != NULL && list->next->data < value)
-        {
-            list = list->next;
-        }
-    }
-    // determined place !!(not tested)!!
-    else
+    int cpt = 0;
+    while (list->next != NULL && cpt < place)
     {
-        int cpt = 0;
-        while (list->next != NULL && cpt < place)
-        {
-            list = list->next;
-            cpt++;
-        }
+        list = list->next;
+        cpt++;
     }
 
-    struct list *elm;
+    struct list *elm = (struct list*)malloc(sizeof(struct list));
     elm->data = value;
     elm->next = list->next;
     list->next = elm;
+}
+
+int list_remove(struct list *list, int place)
+{
+    if (list_is_empty(list) == 1)
+    {
+        return -1;
+    }
+
+    int cpt = 0;
+    while (list->next->next != NULL && cpt < place)
+    {
+        list = list->next;
+        cpt++;
+    }
+
+    int val= list->next->data;
+    list->next = list->next->next;
+
+    return val;
+}
+
+int list_remove_val(struct list *list, int value)
+{
+    if (list_is_empty(list) == 1)
+    {
+        return -1;
+    }
+
+    while (list->next->next != NULL && list->next->data != value)
+    {
+        list = list->next;
+    }
+
+    if (list->next->next == NULL && list->next->data != value)
+    {
+        return -1;
+    }
+
+    int val= list->next->data;
+    list->next = list->next->next;
+
+    return val;
 }
 
 struct list *list_find(struct list *list, int value)
@@ -95,16 +127,25 @@ struct list *list_find(struct list *list, int value)
     return NULL;
 }
 
+int list_contains(struct list *list, int value)
+{
+    struct list *el = list_find(list, value);
+
+    if (el != NULL)
+        return 1;
+    return 0;
+}
+
 void print_list(struct list *list)
 {
     if (list_is_empty(list) == 1){
-        printf("Empty list\n");
+        printf(" empty\n");
         return;
     }
 
     while (list->next != NULL)
     {
-        printf("%d ", list->data);
+        printf("%2d ", list->next->data);
         list = list->next;
     }
     printf("\n");
