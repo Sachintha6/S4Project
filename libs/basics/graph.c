@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <err.h>
+#include <string.h>
 #include "graph.h"
 #include "list.h"
 
@@ -22,14 +23,10 @@ struct graph *graph_init(int directed, int order)
 void graph_add_edge(struct graph *g, int src, int dst)
 {
     if (src < 0 || src >= g->order)
-    {
         err(EXIT_FAILURE, "Invalid src index");
-    }
 
     if (dst < 0 || dst >= g->order)
-    {
         err(EXIT_FAILURE, "Invalid dst index");
-    }
 
     if (list_contains(g->adjlists[src], dst) == 0)
     {
@@ -48,14 +45,10 @@ void graph_add_edge(struct graph *g, int src, int dst)
 void graph_remove_edge(struct graph *g, int src, int dst)
 {
     if (src < 0 || src >= g->order)
-    {
         err(EXIT_FAILURE, "Invalid src index");
-    }
 
     if (dst < 0 || dst >= g->order)
-    {
         err(EXIT_FAILURE, "Invalid dst index");
-    }
 
     list_remove_val(g->adjlists[src], dst);
 
@@ -70,14 +63,67 @@ struct graph *graph_add_vertex(struct graph *g)
     struct graph *tmp = (struct graph*)realloc(g, sizeof(struct graph) + sizeof(struct list*) * (g->order + 1));
 
     if (tmp == NULL)
-    {
         err(EXIT_FAILURE, "Error while realloc");
-    }
+    
     g = tmp;
     g->order += 1;
 
     g->adjlists[g->order - 1] = (struct list*)malloc(sizeof(struct list));
     list_init(g->adjlists[g->order - 1]);
+
+    return g;
+}
+
+struct graph *graph_load(char *file)
+{
+    FILE *fp;
+    char *line = NULL;
+    size_t len = 0;
+    int order, directed = 0;
+
+    // TODO: Verify file extension
+    fp = fopen(file, "r");
+
+    if (fp == NULL)
+        err(EXIT_FAILURE, "Error while open file");
+
+    // comments
+    if (getline(&line, &len, fp) == -1)
+        err(EXIT_FAILURE, "Corrupted file");
+
+    while (line[0] == '#')
+    {
+        if (getline(&line, &len, fp) == -1)
+            err(EXIT_FAILURE, "Corrupted file");
+    }
+    
+    directed = atoi(line);
+
+    if (getline(&line, &len, fp) == -1)
+        err(EXIT_FAILURE, "Corrupted file");
+        
+    order = atoi(line);
+
+    struct graph *g = graph_init(directed, order);
+
+    while (getline(&line, &len, fp) != -1)
+    {
+        char *ptr;
+
+        //TODO: Catch error
+        ptr = strtok(line, " ");
+        int src = atoi(ptr);
+
+        ptr = strtok(NULL, " ");
+        int dst = atoi(ptr);
+
+        //ignore rest of line
+        graph_add_edge(g, src, dst);
+    }
+
+    fclose(fp);
+    if (line)
+        free(line);
 
     return g;
 }

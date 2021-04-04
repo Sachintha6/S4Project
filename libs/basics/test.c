@@ -5,7 +5,7 @@
 
 int main()
 {
-    struct graph *g = graph_init(1, 10);
+    /*struct graph *g = graph_init(1, 10);
 
     graph_print(g);
     
@@ -35,6 +35,19 @@ int main()
     graph_remove_edge(g, 12, 11);
     graph_remove_edge(g, 12, 12);
     graph_add_edge(g, 12, 3);
+    graph_print(g);*/
+
+    struct graph *g = graph_load("../../files/data/test.gra");
+    graph_print(g);
+
+    graph_add_edge(g, 7, 6);
+    graph_add_edge(g, 3, 4);
+
+    graph_print(g);
+
+    g = graph_add_vertex(g);
+    graph_add_edge(g, 9, 3);
+
     graph_print(g);
 
     return 0;
