@@ -50,5 +50,7 @@ int main()
 
     graph_print(g);
 
+    graph_save("../../files/data/test_save.gra", g);
+
     return 0;
 }

@@ -128,6 +128,34 @@ struct graph *graph_load(char *file)
     return g;
 }
 
+void graph_save(char *file, struct graph *g)
+{
+    FILE *fp;
+
+    // TODO: Verify file extension
+    fp = fopen(file, "w");
+
+    if (fp == NULL)
+        err(EXIT_FAILURE, "Error while open file");
+
+    fprintf(fp, "%d\n", g->directed);
+    fprintf(fp, "%d\n", g->order);
+
+    //TODO: opti: only one edge when for no directed graph
+    for (int i = 0; i < g->order; i++)
+    {
+        struct list *list = g->adjlists[i];
+        while (list->next != NULL)
+        {
+            fprintf(fp, "%d %d\n", i, list->data);
+            list = list->next;            
+        }
+    }
+
+    fclose(fp);
+    //return error/success value ?
+}
+
 void graph_print(struct graph *g)
 {
     // Header
