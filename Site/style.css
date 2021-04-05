@@ -69,6 +69,13 @@ html, body
     letter-spacing: 8px;
     text-align: center;
 }
+.chrono, .dl, .ref, .Probs
+{
+    padding: 50px 80px;
+}
+
+
+
 
 p
 {
