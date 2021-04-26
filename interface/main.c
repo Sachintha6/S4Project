@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
 
     gtk_init(&argc, &argv);
 
-    builder = gtk_builder_new_from_file("Interface2.glade");
+    builder = gtk_builder_new_from_file("gui.glade");
 
     window = GTK_WIDGET(gtk_builder_get_object(builder, "Interface"));
     widgets->w_dlg_file_choose = GTK_WIDGET(gtk_builder_get_object(builder, "dlg_file_choose"));
