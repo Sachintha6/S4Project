@@ -106,34 +106,28 @@
             <property name="can_focus">False</property>
             <child>
               <object class="GtkScrolledWindow" id="map-container">
-                <!--<property name="width_request">375</property>-->
+                <property name="width_request">375</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="shadow_type">in</property>
-                <property name="hscrollbar_policy">automatic</property>
-                <property name="vscrollbar_policy">automatic</property>
-                <!--<property name="min_content_width">500</property>
-                <property name="min_content_height">500</property>
-                <property name="max_content_width">5000</property>
-                <property name="max_content_height">5000</property>-->
+                <property name="min_content_width">450</property>
+                <property name="min_content_height">250</property>
+                <property name="max_content_width">250</property>
+                <property name="max_content_height">450</property>
                 <child>
                   <object class="GtkViewport">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="resize_mode">queue</property>
                     <child>
-                      <object class="GtkDrawingArea" id="map-drawing">
-                        <property name="width_request">3750</property>
+                      <object class="GtkImage" id="map-drawing">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="hexpand">True</property>
                         <property name="vexpand">True</property>
-                        <property name="app_paintable">True</property>
-                        <signal name="draw" handler="on_draw" swapped="no"/>
+                        <property name="stock">gtk-discard</property>
                       </object>
                     </child>
                   </object>
-                  
                 </child>
               </object>
               <packing>
