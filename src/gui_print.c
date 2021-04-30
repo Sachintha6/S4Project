@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <math.h>
 #include "gui.h"
+#include "../libs/map/mapGraph.h"
+#include "../libs/map/list.h"
 
 gfloat f (gfloat x)
 {
@@ -11,42 +13,59 @@ gfloat f (gfloat x)
 
 void on_draw( GtkWidget *widget, cairo_t *cr, app_widgets *app_wdgts)
 {
-    GdkRectangle da;
-
-    gdouble dx = 5.0, dy = 5.0;
-    gdouble clip_x1 = 0.0, clip_y1 = 0.0, clip_x2 = 0.0, clip_y2 = 0.0;
+    //Get elements
+    app_wdgts->drawing_area = widget;
     
-    GdkWindow *window = gtk_widget_get_window(widget);
+    gtk_widget_add_events(app_wdgts->drawing_area, GDK_BUTTON_PRESS_MASK);
+    gtk_widget_add_events(app_wdgts->drawing_area, GDK_BUTTON_RELEASE_MASK);
+    app_wdgts->cr = cr;
 
-    gdk_window_get_geometry (window,
-            &da.x,
-            &da.y,
-            &da.width,
-            &da.height); 
-
-    cairo_scale (cr, ZOOM_X/100, ZOOM_Y/100);
-    //RM: cairo_translate (cr, -da.width / 2, -da.height / 2);
-    gtk_widget_set_size_request (widget, 2500, 2500);
-
-    // Background image
+    // Set zoom and adapt frame
+    cairo_scale (cr, app_wdgts->zoom/100, app_wdgts->zoom/100);   
     gint width = cairo_image_surface_get_width(app_wdgts->bg_image);
     gint height = cairo_image_surface_get_height(app_wdgts->bg_image);
+    gtk_widget_set_size_request (widget, width*app_wdgts->zoom/100, height*app_wdgts->zoom/100);
+
+    // Apply background image
     cairo_set_source_surface(cr, app_wdgts->bg_image, 0, 0);
     cairo_rectangle (cr, 0, 0, width, height);
     cairo_fill(cr);
+    
+    // Draw a circle
+    for (int i = 0; i < app_wdgts->gm->order; i++)
+    {
+        if (app_wdgts->gm->stations[i]->state == 1)
+        {
+            double x = app_wdgts->gm->stations[i]->x;
+            double y = app_wdgts->gm->stations[i]->y;
 
-    cairo_device_to_user_distance (cr, &dx, &dy);
-    cairo_clip_extents (cr, &clip_x1, &clip_y1, &clip_x2, &clip_y2);
-    cairo_set_line_width (cr, dx);
+            // Print lines
+            struct list *list = app_wdgts->gm->stations[i]->adjs;
+            
+            while (list->next != NULL)
+            {
+                cairo_move_to(cr, x, y);
+                cairo_set_source_rgb (cr, 0.0, 1.0, 0.0);
+                cairo_set_line_width(cr, 8.0);
+                cairo_line_to(cr, app_wdgts->gm->stations[list->next->data]->x, 
+                        app_wdgts->gm->stations[list->next->data]->y);
+                cairo_stroke (cr);
 
-    printf("dim x: %f %f y: %f %f \n", clip_x1, clip_x2, clip_y1, clip_y2);
+                list = list->next;
+            }
 
-    /* Draw a circle*/
-    cairo_arc (cr, 500, 500, 25, 0.0, 2 * 3.1415);
-    cairo_set_source_rgba (cr, 0.6, 0.8, 1.0, 0.6);
-    cairo_fill_preserve (cr);
-    cairo_set_source_rgb (cr, 0.0, 0.0, 0.0);
-    cairo_stroke (cr);
+            // Print station
+            cairo_arc (cr, x, y, 10, 0.0, 2 * 3.1415);
+            cairo_set_source_rgba (cr, 0.6, 0.8, 1.0, 1);
+                cairo_set_line_width(cr, 2.0);
+            cairo_fill_preserve (cr);
+            cairo_set_source_rgb (cr, 0.5, 0.5, 0.5);
 
-    //return FALSE;
+            if (app_wdgts->selected_sid == i){
+                cairo_set_source_rgb (cr, 1.0, 0.0, 0.0);
+            }
+
+            cairo_stroke (cr);
+        }
+    }
 }

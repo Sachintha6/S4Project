@@ -4,13 +4,17 @@
 #include <gtk/gtk.h>
 
 typedef struct {
-    GtkWidget *w_dlg_file_choose;       
-    GtkWidget *w_drawing_area;
-    GtkWidget *w_menuitm;
+    GtkWidget *dlg_file_choose;       
+    GtkWidget *drawing_area;
+    GtkWidget *menuitm;
+    cairo_t *cr;
     cairo_surface_t *bg_image;
+    
+    //general infos
+    double zoom;
+    int tool;
+    int selected_sid;
+    struct mgraph *gm;
 } app_widgets;
-
-#define ZOOM_X 50.0
-#define ZOOM_Y 50.0
 
 #endif

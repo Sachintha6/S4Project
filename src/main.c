@@ -2,13 +2,21 @@
 #include <cairo.h>
 #include <stdio.h>
 #include "gui.h"
+#include "../libs/map/mapGraph.h"
+#include "../libs/map/list.h"
 
 int main (int argc, char **argv)
 {
     GtkBuilder *builder;
     GObject *window;
     GError *error = NULL;
+    
+    //Init struct
     app_widgets *widgets = g_slice_new(app_widgets);
+    widgets->zoom = 100.0;
+    widgets->tool = 1;
+    widgets->selected_sid = -1;
+    widgets->gm = mgraph_init(1, 0);
 
     gtk_init(&argc, &argv);
 
@@ -21,17 +29,19 @@ int main (int argc, char **argv)
     }
 
     window = gtk_builder_get_object(builder, "Interface");
+
     // Get objects from UI
-    widgets->w_dlg_file_choose = GTK_WIDGET( gtk_builder_get_object(builder, "dlg_file_choose"));
-    widgets->w_drawing_area = GTK_WIDGET( gtk_builder_get_object(builder, "map_drawing"));
+    widgets->dlg_file_choose = GTK_WIDGET( gtk_builder_get_object(builder, "dlg_file_choose"));
+    widgets->drawing_area = GTK_WIDGET( gtk_builder_get_object(builder, "map_drawing"));
     widgets->bg_image = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, 10, 10);
 
     gtk_builder_connect_signals(builder, widgets);
     g_object_unref(builder);
 
-    gtk_widget_show( GTK_WIDGET(window));
+    gtk_widget_show(GTK_WIDGET(window));
     gtk_main ();
 
-    g_slice_free( app_widgets, widgets);
+    //Free and exit
+    g_slice_free(app_widgets, widgets);
     return 0;
 }
