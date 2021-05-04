@@ -38,12 +38,23 @@
                         </object>
                         </child>
                         <child>
+                        <object class="GtkImageMenuItem" id="menuitm_import">
+                            <property name="label">Import</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="use_underline">True</property>
+                            <property name="use_stock">True</property>
+                            <signal name="activate" handler="on_menuitm_import_activate" swapped="no"/>
+                        </object>
+                        </child>
+                        <child>
                         <object class="GtkImageMenuItem">
                             <property name="label">gtk-save</property>
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="use_underline">True</property>
                             <property name="use_stock">True</property>
+                            <signal name="activate" handler="on_menuitm_save_activate" swapped="no"/>
                         </object>
                         </child>
                         <child>
@@ -53,6 +64,7 @@
                             <property name="can_focus">False</property>
                             <property name="use_underline">True</property>
                             <property name="use_stock">True</property>
+                            <signal name="activate" handler="on_menuitm_saveas_activate" swapped="no"/>
                         </object>
                         </child>
                         <child>
@@ -227,16 +239,17 @@
                                     </packing>
                                 </child>
                                 <child>
-                                    <object class="GtkComboBox" id="combobox1">
-                                        <property name="width_request">5</property>
+                                    <object class="GtkViewport" id="viewportcombo">
+                                        <property name="width_request">10</property>
                                         <property name="visible">True</property>
+                                        <property name="resize_mode">queue</property>
                                         <child>
-                                            <object class="GtkCellRendererText" id="Ligne 1">
-                                                Ligne 1
+                                            <object class="GtkComboBoxText" id="comboboxlines">
+                                                <property name="width_request">10</property>
+                                                <property name="visible">True</property>
+                                                <signal name="changed" handler="on_combo_change" swapped="no"/>
+                                        
                                             </object>
-                                        </child>
-                                        <child>
-                                            <object class="GtkCellRendererText" id="Ligne 2"/>
                                         </child>
                                     </object>
                                     <packing>
@@ -397,6 +410,63 @@
         <action-widgets>
         <action-widget response="-5">Open_btn</action-widget>
         <action-widget response="-7">Cancel_btn</action-widget>
+        </action-widgets>
+    </object>
+
+    <object class="GtkFileChooserDialog" id="dlg_save_as">
+        <property name="can_focus">False</property>
+        <property name="type_hint">dialog</property>
+        <property name="transient_for">Interface</property>
+        <child internal-child="vbox">
+        <object class="GtkBox">
+            <property name="can_focus">False</property>
+            <property name="orientation">vertical</property>
+            <property name="spacing">2</property>
+            <child internal-child="action_area">
+            <object class="GtkButtonBox">
+                <property name="can_focus">False</property>
+                <property name="layout_style">end</property>
+                <child>
+                <object class="GtkButton" id="save_btn">
+                    <property name="label">Save</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                </object>
+                <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                </packing>
+                </child>
+                <child>
+                <object class="GtkButton" id="Cancel_sa_btn">
+                    <property name="label">Cancel</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                </object>
+                <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                </packing>
+                </child>
+            </object>
+            <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">0</property>
+            </packing>
+            </child>
+            <child>
+            <placeholder/>
+            </child>
+        </object>
+        </child>
+        <action-widgets>
+        <action-widget response="-5">save_btn</action-widget>
+        <action-widget response="-7">Cancel_sa_btn</action-widget>
         </action-widgets>
     </object>
 </interface>

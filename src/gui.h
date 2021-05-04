@@ -4,9 +4,12 @@
 #include <gtk/gtk.h>
 
 typedef struct {
-    GtkWidget *dlg_file_choose;       
+    GtkWidget *dlg_file_choose;
+    GtkWidget *dlg_save_as;   
     GtkWidget *drawing_area;
     GtkWidget *menuitm;
+    GtkWidget *combo_lines;
+    GdkRGBA *newcolor;
     cairo_t *cr;
     cairo_surface_t *bg_image;
     
@@ -15,6 +18,8 @@ typedef struct {
     int tool;
     int selected_sid;
     struct mgraph *gm;
+    struct line *current_line;
+    struct line *lines[15];
 } app_widgets;
 
 #endif

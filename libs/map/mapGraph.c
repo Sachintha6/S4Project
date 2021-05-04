@@ -29,7 +29,7 @@ struct mgraph *mgraph_init(int directed, int order)
     return g;
 }
 
-void mgraph_add_edge(struct mgraph *g, int src, int dst)
+void mgraph_add_edge(struct mgraph *g, int src, int dst, int idline)
 {
     if (src < 0 || src >= g->order || g->stations[src]->state == 0)
         err(EXIT_FAILURE, "Invalid src index");
@@ -39,14 +39,14 @@ void mgraph_add_edge(struct mgraph *g, int src, int dst)
 
     if (list_contains(g->stations[src]->adjs, dst) == 0)
     {
-        list_push(g->stations[src]->adjs, dst);
+        list_push(g->stations[src]->adjs, dst, idline);
     }
 
     if (g->directed == 0)
     {
         if (list_contains(g->stations[dst]->adjs, src) == 0)
         {
-            list_push(g->stations[dst]->adjs, src);
+            list_push(g->stations[dst]->adjs, src, idline);
         }
     }
 }
@@ -129,6 +129,9 @@ struct mgraph *mgraph_load(char *file)
     FILE *fp;
     char *line = NULL;
     size_t len = 0;
+    char *stationsName;
+    char *stationsPosX;
+    char *stationsPosY;
     int order, directed = 0;
 
     // TODO: Verify file extension
@@ -137,12 +140,32 @@ struct mgraph *mgraph_load(char *file)
     if (fp == NULL)
         err(EXIT_FAILURE, "Error while open file");
 
-    // comments
     if (getline(&line, &len, fp) == -1)
         err(EXIT_FAILURE, "Corrupted file");
 
     while (line[0] == '#')
     {
+        char *ptr;
+        char *rest;
+        ptr = strtok(line, ":");
+        rest = strtok(NULL, "");
+
+        if (strcmp(ptr, "#stationsPosX") == 0)
+        {
+            stationsPosX = (char *)malloc(strlen(rest));
+            strcpy(stationsPosX, rest);
+        }
+        else if (strcmp(ptr, "#stationsPosY") == 0)
+        {
+            stationsPosY = (char *)malloc(strlen(rest));
+            strcpy(stationsPosY, rest);
+        }
+        else if (strcmp(ptr, "#stationsName") == 0)
+        {
+            stationsName = (char *)malloc(strlen(rest));
+            strcpy(stationsName, rest);
+        }
+
         if (getline(&line, &len, fp) == -1)
             err(EXIT_FAILURE, "Corrupted file");
     }
@@ -156,6 +179,21 @@ struct mgraph *mgraph_load(char *file)
 
     struct mgraph *g = mgraph_init(directed, order);
 
+    char *subp;
+    char *subq;
+    char *subd;
+
+    for (int i = 0; i < order; i++)
+    {
+        subp = strtok_r(stationsPosX, " ", &stationsPosX);
+        subq = strtok_r(stationsPosY, " ", &stationsPosY);
+        subd = strtok_r(stationsName, ",", &stationsName);
+
+        g->stations[i]->x = atof(subp);
+        g->stations[i]->y = atof(subq);
+        g->stations[i]->name = subd;
+    }
+
     while (getline(&line, &len, fp) != -1)
     {
         char *ptr;
@@ -163,12 +201,13 @@ struct mgraph *mgraph_load(char *file)
         //TODO: Catch error
         ptr = strtok(line, " ");
         int src = atoi(ptr);
-
         ptr = strtok(NULL, " ");
         int dst = atoi(ptr);
+        ptr = strtok(NULL, " ");
+        int idline = atoi(ptr);
 
         //ignore rest of line
-        mgraph_add_edge(g, src, dst);
+        mgraph_add_edge(g, src, dst, idline);
     }
 
     fclose(fp);
@@ -178,7 +217,7 @@ struct mgraph *mgraph_load(char *file)
     return g;
 }
 
-void mgraph_save(char *file, struct mgraph *g)
+void mgraph_save(char *file, struct mgraph *g, struct line *lines[])
 {
     FILE *fp;
 
@@ -187,6 +226,35 @@ void mgraph_save(char *file, struct mgraph *g)
 
     if (fp == NULL)
         err(EXIT_FAILURE, "Error while open file");
+
+    //Headers
+
+    fprintf(fp, "#linesName:");
+    for (int i = 0; i < 15; i++)
+        fprintf(fp, "%s,", lines[i]->name);
+    fprintf(fp, "\n");
+
+    fprintf(fp, "#linesColor:");
+    for (int i = 0; i < 15; i++)
+        fprintf(fp, "%s,", lines[i]->color);
+    fprintf(fp, "\n");
+
+    fprintf(fp, "#stationsName:");
+    for (int i = 0; i < g->order; i++)
+        fprintf(fp, "%s,", g->stations[i]->name);
+    fprintf(fp, "\n");
+
+    fprintf(fp, "#stationsPosX:");
+    for (int i = 0; i < g->order; i++)
+        fprintf(fp, "%f ", g->stations[i]->x);
+    fprintf(fp, "\n");
+
+    fprintf(fp, "#stationsPosY:");
+    for (int i = 0; i < g->order; i++)
+        fprintf(fp, "%f ", g->stations[i]->y);
+    fprintf(fp, "\n");
+
+    //Body
 
     fprintf(fp, "%d\n", g->directed);
     fprintf(fp, "%d\n", g->order);
@@ -197,8 +265,8 @@ void mgraph_save(char *file, struct mgraph *g)
         struct list *list = g->stations[i]->adjs;
         while (list->next != NULL)
         {
-            fprintf(fp, "%d %d\n", i, list->data);
-            list = list->next;            
+            list = list->next;
+            fprintf(fp, "%d %d %d\n", i, list->data, list->idline);
         }
     }
 

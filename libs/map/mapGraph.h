@@ -17,11 +17,18 @@ struct station
     struct list *adjs;
 };
 
+struct line
+{
+    int idline;
+    const char *name;
+    const char *color;
+};
+
 // Gen
 struct mgraph *mgraph_init(int directed, int order);
 
 // Add/rm elts
-void mgraph_add_edge(struct mgraph *g, int src, int dst);
+void mgraph_add_edge(struct mgraph *g, int src, int dst, int idline);
 void mgraph_remove_edge(struct mgraph *g, int src, int dst);
 struct mgraph *mgraph_add_vertex(struct mgraph *g, char *name, double x, double y);
 void mgraph_remove_vertex(struct mgraph *g, int id);
@@ -32,7 +39,7 @@ int mgraph_get_station_by_position(struct mgraph *g, double x, double y, double 
 
 //Load/save
 struct mgraph *mgraph_load(char *file);
-void mgraph_save(char *file, struct mgraph *g);
+void mgraph_save(char *file, struct mgraph *g, struct line *lines[]);
 
 //Display
 void mgraph_print(struct mgraph *g);

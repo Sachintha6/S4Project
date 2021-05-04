@@ -5,6 +5,7 @@ struct list
 {
 	struct list *next;
 	int data;
+    int idline;
 };
 
 // Gen
@@ -13,7 +14,7 @@ int list_is_empty(struct list *list);
 int list_len(struct list *list);
 
 // Elements
-void list_push(struct list *list, int value);
+void list_push(struct list *list, int value, int idline);
 int list_pop(struct list *list);
 void list_insert(struct list *list, int value, int place);
 int list_remove(struct list *list, int place);

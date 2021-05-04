@@ -42,30 +42,51 @@ void on_draw( GtkWidget *widget, cairo_t *cr, app_widgets *app_wdgts)
             // Print lines
             struct list *list = app_wdgts->gm->stations[i]->adjs;
             
+            cairo_set_line_width(cr, 8.0);
             while (list->next != NULL)
             {
+                gdk_rgba_parse(app_wdgts->newcolor, app_wdgts->lines[list->next->idline]->color);
+                cairo_set_source_rgb(cr, 
+                    app_wdgts->newcolor->red, 
+                    app_wdgts->newcolor->green, 
+                    app_wdgts->newcolor->blue);
+                
                 cairo_move_to(cr, x, y);
-                cairo_set_source_rgb (cr, 0.0, 1.0, 0.0);
-                cairo_set_line_width(cr, 8.0);
                 cairo_line_to(cr, app_wdgts->gm->stations[list->next->data]->x, 
                         app_wdgts->gm->stations[list->next->data]->y);
                 cairo_stroke (cr);
 
                 list = list->next;
             }
+        }
+    }
+
+    for (int i = 0; i < app_wdgts->gm->order; i++)
+    {
+        if (app_wdgts->gm->stations[i]->state == 1)
+        {
+            double x = app_wdgts->gm->stations[i]->x;
+            double y = app_wdgts->gm->stations[i]->y;
 
             // Print station
             cairo_arc (cr, x, y, 10, 0.0, 2 * 3.1415);
             cairo_set_source_rgba (cr, 0.6, 0.8, 1.0, 1);
-                cairo_set_line_width(cr, 2.0);
+            cairo_set_line_width(cr, 2.0);
             cairo_fill_preserve (cr);
             cairo_set_source_rgb (cr, 0.5, 0.5, 0.5);
 
             if (app_wdgts->selected_sid == i){
                 cairo_set_source_rgb (cr, 1.0, 0.0, 0.0);
             }
+            //cairo_stroke (cr);
 
-            cairo_stroke (cr);
+            cairo_set_source_rgb(cr, 0.1, 0.1, 0.1); 
+            cairo_set_font_size(cr, 15);
+
+            cairo_move_to(cr, x+20, y+5);
+            cairo_show_text(cr, app_wdgts->gm->stations[i]->name); 
+            //cairo_set_source_rgba(cr, 0.1, 0.1, 0.1, 0.0); 
         }
     }
 }
+

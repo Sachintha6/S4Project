@@ -7,23 +7,75 @@
 
 void on_menuitm_open_activate(GtkMenuItem *menuitem, app_widgets *app_wdgts)
 {
-    gchar *file_name = NULL;
-    gtk_widget_show(app_wdgts->dlg_file_choose);
+    gchar *filename = NULL;
+    // Next line have an issue
+    gtk_widget_show(GTK_WIDGET(app_wdgts->dlg_file_choose));
     
     if (gtk_dialog_run(GTK_DIALOG (app_wdgts->dlg_file_choose)) == GTK_RESPONSE_OK) {
+       
+        filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(app_wdgts->dlg_file_choose));
         
-        file_name = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(app_wdgts->dlg_file_choose));
-        if (file_name != NULL) {
-            app_wdgts->bg_image = cairo_image_surface_create_from_png(file_name);
-            gtk_widget_queue_draw(GTK_WIDGET(app_wdgts->drawing_area));
+        if (filename != NULL) {
+            /*app_wdgts->bg_image = cairo_image_surface_create_from_png(file_name);
+            gtk_widget_queue_draw(GTK_WIDGET(app_wdgts->drawing_area));*/
+            app_wdgts->gm = mgraph_load(filename);
+            mgraph_print(app_wdgts->gm);
         }
 
-	    g_free(file_name);
+	    g_free(filename);
     }
 
     gtk_widget_hide(app_wdgts->dlg_file_choose);
 }
 
+void on_menuitm_import_activate(GtkMenuItem *menuitem, app_widgets *app_wdgts)
+{
+    gchar *filename = NULL;
+    gtk_widget_show(app_wdgts->dlg_file_choose);
+    
+    if (gtk_dialog_run(GTK_DIALOG (app_wdgts->dlg_file_choose)) == GTK_RESPONSE_OK) {
+        
+        filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(app_wdgts->dlg_file_choose));
+        if (filename != NULL) {
+            app_wdgts->bg_image = cairo_image_surface_create_from_png(filename);
+            //gtk_widget_queue_draw(GTK_WIDGET(app_wdgts->drawing_area));
+            //app_wdgts->gm = mgraph_load(filename);
+            //mgraph_print(app_wdgts->gm);
+        }
+
+	    g_free(filename);
+    }
+
+    gtk_widget_hide(app_wdgts->dlg_file_choose);
+}
+
+void on_menuitm_save_activate(GtkMenuItem *menuitem, app_widgets *app_wdgts)
+{
+    printf("=== SAVING ===\n");
+    mgraph_save("../files/data/mtest.gra", app_wdgts->gm, app_wdgts->lines);
+    printf("=== SAVED ===\n");
+}
+
+void on_menuitm_saveas_activate(GtkMenuItem *menuitem, app_widgets *app_wdgts)
+{
+    printf("=== SAVE AS ===\n");
+    gchar *filename = NULL;
+    gtk_widget_show(app_wdgts->dlg_save_as);
+    
+    if (gtk_dialog_run( GTK_DIALOG(app_wdgts->dlg_save_as)) == GTK_RESPONSE_OK) {
+        
+        filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(app_wdgts->dlg_save_as));
+        if (filename != NULL) {
+            
+            printf("--%s\n", filename);
+        }
+
+	    g_free(filename);
+    }
+
+    gtk_widget_hide(app_wdgts->dlg_save_as);
+
+}
 
 void on_menuitm_close_activate(GtkMenuItem *menuitem, app_widgets *app_wdgts)
 {
@@ -62,8 +114,17 @@ void on_da_click(GtkWidget *widget, GdkEventButton *event, app_widgets *app_wdgt
     double x = event->x / app_wdgts->zoom * 100;
     double y = event->y / app_wdgts->zoom * 100;
     //printf("click: %4.0f.%4.0f \n", x, y);
-    
-    if (app_wdgts->tool == 1)
+
+    if(event->type == GDK_DOUBLE_BUTTON_PRESS)
+    {
+        int id = mgraph_get_station_by_position(app_wdgts->gm, x, y, 10);
+        
+        if (id != -1)
+        {
+            printf("Rename Station n°%d\n", id);
+        }
+    }
+    else if (app_wdgts->tool == 1)
     {
         // Add station
         if (mgraph_get_station_by_position(app_wdgts->gm, x, y, 10) == -1)
@@ -71,9 +132,9 @@ void on_da_click(GtkWidget *widget, GdkEventButton *event, app_widgets *app_wdgt
             app_wdgts->gm = mgraph_add_vertex(app_wdgts->gm, "New", x, y);
         }
     }
-
-    if (app_wdgts->tool == 2)
+    else if (app_wdgts->tool == 2)
     {
+        //add section between 2 stations
         int id = mgraph_get_station_by_position(app_wdgts->gm, x, y, 10);
         
         if (id != -1)
@@ -84,13 +145,13 @@ void on_da_click(GtkWidget *widget, GdkEventButton *event, app_widgets *app_wdgt
             }
             else
             {
-                mgraph_add_edge(app_wdgts->gm, app_wdgts->selected_sid, id);
+                //verify src != dst
+                mgraph_add_edge(app_wdgts->gm, app_wdgts->selected_sid, id, app_wdgts->current_line->idline);
                 app_wdgts->selected_sid = -1;
             }
         }
     }
-
-    if (app_wdgts->tool == 3)
+    else if (app_wdgts->tool == 3)
     {
         int id = mgraph_get_station_by_position(app_wdgts->gm, x, y, 10);
         
@@ -109,8 +170,7 @@ void on_da_click(GtkWidget *widget, GdkEventButton *event, app_widgets *app_wdgt
             app_wdgts->selected_sid = -1;
         }
     }
-
-    if (app_wdgts->tool == 4)
+    else if (app_wdgts->tool == 4)
     {
         // Remove station
         int id = mgraph_get_station_by_position(app_wdgts->gm, x, y, 10);
@@ -119,8 +179,7 @@ void on_da_click(GtkWidget *widget, GdkEventButton *event, app_widgets *app_wdgt
             mgraph_remove_vertex(app_wdgts->gm, id);
         }
     }
-
-    if (app_wdgts->tool == 5)
+    else if (app_wdgts->tool == 5)
     {
         int id = mgraph_get_station_by_position(app_wdgts->gm, x, y, 10);
         
@@ -164,4 +223,13 @@ void on_tool_clicked(GtkToolButton *button, app_widgets *app_wdgts)
     if(strcmp(gtk_tool_button_get_label(button), "Remove Section") == 0){
         app_wdgts->tool = 5;
     }
+}
+
+void on_combo_change( GtkWidget *widget, app_widgets *app_wdgts)
+{
+    int idline = atoi(gtk_combo_box_get_active_id(GTK_COMBO_BOX(widget)));
+
+    app_wdgts->current_line->idline = idline;
+    app_wdgts->current_line->name = app_wdgts->lines[idline]->name;
+    app_wdgts->current_line->color = app_wdgts->lines[idline]->color;
 }

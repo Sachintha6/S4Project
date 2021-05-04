@@ -29,10 +29,11 @@ int list_len(struct list *list)
     return cpt;
 }
 
-void list_push(struct list *list, int value)
+void list_push(struct list *list, int value, int idline)
 {
     struct list *new = (struct list*)malloc(sizeof(struct list));
     new->data = value;
+    new->idline = idline;
     new->next = list->next;
     list->next = new;
 }
@@ -145,7 +146,7 @@ void print_list(struct list *list)
 
     while (list->next != NULL)
     {
-        printf("%2d ", list->next->data);
+        printf("%2d(%2d) ", list->next->data, list->next->idline);
         list = list->next;
     }
     printf("\n");
