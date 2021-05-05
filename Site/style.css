@@ -1,7 +1,7 @@
 nav
 {
     width: 100%;
-    background-color: darkgray;
+    background-color: #99AAB5;
 }
 nav ul
 {
@@ -19,13 +19,13 @@ nav a{
     display: inline-block;
     text-decoration: none;
     padding: 20px 30px;
-    color: #FFF;
+    color: #23272A;
 }
 
 .menu:hover
 {
     border-top: 5px solid;
-    background-color: white;
+    background-color: darkgray;
 }
 
 .table
@@ -39,8 +39,8 @@ html, body
     height: 100%;
     margin: 0;
     font-family: 'Open Sans',sans-serif;
-    background-color: white;
-    color: black;
+    background-color: #2A2D32;
+    color: white;
 }
 
 .img1
@@ -58,6 +58,10 @@ html, body
 {
     padding: 50px 80px;
 }
+.Membres
+{
+    padding: 50px 80px;
+}
 .head
 {
     position: absolute;
@@ -68,6 +72,7 @@ html, body
     text-transform: uppercase;
     letter-spacing: 8px;
     text-align: center;
+    color: black;
 }
 .chrono, .dl, .ref, .Probs
 {
@@ -79,7 +84,7 @@ html, body
 
 p
 {
-    color: black;
+    color: white;
     font-size: medium;
     opacity: 0,6;
 }
@@ -105,7 +110,7 @@ h1
 
 a:hover
 {
-    color:red;
+    color:green;
 }
 
 
@@ -169,4 +174,42 @@ ul.tl li .timestamp{
     text-align: right;
     font-size: 12px;
 }
+
+
+
+
+
+
+.container 
+{
+    background-color: rgb(192, 192, 192);
+    width: 80%;
+    border-radius: 15px;
+}
+      
+.skill 
+{
+    background-color: rgb(116, 194, 92);
+    color: white;
+    padding: 1%;
+    text-align: right;
+    font-size: 20px;
+    border-radius: 15px;
+}
+
+.Structures {
+            width: 100%;
+        }
+
+.Algo {
+            width: 50%;
+        }
+      
+        .Interface {
+            width: 70%;
+        }
+      
+        .Saisie {
+            width: 40%;
+        }
 
