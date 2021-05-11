@@ -1,6 +1,14 @@
 #ifndef _MAP_GRAPH_H_
 #define _MAP_GRAPH_H_
 
+struct map
+{
+    int nblines;
+    const char *backgroundImg;
+    struct mgraph *g;
+    struct line *lines[];
+};
+
 struct mgraph
 {
     int directed;
@@ -38,7 +46,7 @@ void mgraph_remove_vertex(struct mgraph *g, int id);
 int mgraph_get_station_by_position(struct mgraph *g, double x, double y, double range);
 
 //Load/save
-struct mgraph *mgraph_load(char *file);
+struct map *mgraph_load(char *file);
 void mgraph_save(char *file, struct mgraph *g, struct line *lines[]);
 
 //Display

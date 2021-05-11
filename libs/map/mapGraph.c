@@ -124,15 +124,17 @@ int mgraph_get_station_by_position(struct mgraph *g, double x, double y, double 
     return -1;
 }
 
-struct mgraph *mgraph_load(char *file)
+struct map *mgraph_load(char *file)
 {
     FILE *fp;
     char *line = NULL;
     size_t len = 0;
+    int nblines = 0;
     char *stationsName;
     char *stationsPosX;
     char *stationsPosY;
     int order, directed = 0;
+    struct map *map;
 
     // TODO: Verify file extension
     fp = fopen(file, "r");
@@ -152,18 +154,65 @@ struct mgraph *mgraph_load(char *file)
 
         if (strcmp(ptr, "#stationsPosX") == 0)
         {
-            stationsPosX = (char *)malloc(strlen(rest));
+            stationsPosX = (char *)malloc(strlen(rest) + 4);
             strcpy(stationsPosX, rest);
         }
         else if (strcmp(ptr, "#stationsPosY") == 0)
         {
-            stationsPosY = (char *)malloc(strlen(rest));
+            stationsPosY = (char *)malloc(strlen(rest) + 4);
             strcpy(stationsPosY, rest);
         }
         else if (strcmp(ptr, "#stationsName") == 0)
         {
-            stationsName = (char *)malloc(strlen(rest));
+            stationsName = (char *)malloc(strlen(rest) + 4);
             strcpy(stationsName, rest);
+        }
+        else if (strcmp(ptr, "#nblines") == 0)
+        {
+            nblines = atoi(rest);
+            map = (struct map*)malloc(sizeof(struct map) + 
+                            sizeof(struct line*) * nblines);
+            
+            map->nblines = nblines;
+        }
+        else if (strcmp(ptr, "#backgroundImg") == 0)
+        {
+            char *path = strtok(rest, "\n");
+            char *img = (char *)malloc(strlen(path) + 2);
+            strcpy(img, rest);
+            map->backgroundImg = img;
+            printf("file: %s\n", map->backgroundImg);
+        }
+        else if (strcmp(ptr, "#linesName") == 0)
+        {
+            int i = 0;
+            char *name;
+            name = strtok(rest, ",");
+
+            while (strcmp(name, "\n") != 0)
+            {
+                char *namecp = (char *)malloc(sizeof(char) * strlen(name) + 4);
+                strcpy(namecp, name);
+                map->lines[i] = (struct line*)malloc(sizeof(struct line));
+                map->lines[i]->name = namecp;
+                i++;
+                name = strtok(NULL, ",");
+            }
+        }
+        else if (strcmp(ptr, "#linesColor") == 0)
+        {
+            int i = 0;
+            char *color;
+            color = strtok(rest, ",");
+
+            while (strcmp(color, "\n") != 0)
+            {
+                char *colorcp = (char *)malloc(sizeof(char) * strlen(color) + 4);
+                strcpy(colorcp, color);
+                map->lines[i]->color = colorcp;
+                i++;
+                color = strtok(NULL, ",");
+            }
         }
 
         if (getline(&line, &len, fp) == -1)
@@ -211,10 +260,12 @@ struct mgraph *mgraph_load(char *file)
     }
 
     fclose(fp);
-    if (line)
-        free(line);
+    /*if (line)
+        free(line);*/
 
-    return g;
+    map->g = g;
+
+    return map;
 }
 
 void mgraph_save(char *file, struct mgraph *g, struct line *lines[])
@@ -228,6 +279,11 @@ void mgraph_save(char *file, struct mgraph *g, struct line *lines[])
         err(EXIT_FAILURE, "Error while open file");
 
     //Headers
+
+    printf("Not updated with new Struct\n");
+    return;
+
+    //fprintf(fp, "#nblines:%d", );
 
     fprintf(fp, "#linesName:");
     for (int i = 0; i < 15; i++)
