@@ -17,9 +17,10 @@ typedef struct {
     double zoom;
     int tool;
     int selected_sid;
-    struct mgraph *gm;
+    //struct mgraph *gm;
     struct line *current_line;
-    struct line *lines[15];
+    struct map *map;
+    //struct line *lines[];
 } app_widgets;
 
 #endif

@@ -5,7 +5,6 @@
 
 int choose_min(int *dist, int *m, int len)
 {
-    printf("HERE\n");
     int x = -1;
     int mini = -1;
 
@@ -43,7 +42,7 @@ void dijkstra(struct mgraph *g, int src)
         while (l->next != NULL)
         {
             int y = l->data;
-            printf("== %d\n", y);
+            //printf("== %d\n", y);
 
             if (dist[x] + 1 < dist[y])
             {
@@ -55,7 +54,8 @@ void dijkstra(struct mgraph *g, int src)
         }
 
         x = choose_min(dist, m, g->order);
-        n++;
+        printf("choose min: %d\n", x);
+        n += 1;
 
     }
 

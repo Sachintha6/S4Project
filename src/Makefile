@@ -1,6 +1,6 @@
 CC     = gcc
 CFLAGS = `pkg-config --cflags gtk+-3.0 gmodule-export-2.0 glib-2.0`
-LIBS   = `pkg-config --libs gtk+-3.0 gmodule-2.0 glib-2.0`
+LIBS   = `pkg-config --libs gtk+-3.0 gmodule-2.0 glib-2.0` -fsanitize=address
 DEBUG  = -Wall -g
 
 OBJECTS = interface.o print.o events.o mapGraph.o list.o

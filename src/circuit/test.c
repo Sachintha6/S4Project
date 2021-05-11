@@ -10,7 +10,8 @@ int main()
 
     mgraph_print(g);
     
-    mgraph_add_edge(g, 2, 0, -1);
+    mgraph_add_edge(g, 0, 2, -1);
+    mgraph_add_edge(g, 0, 1, -1);
     mgraph_add_edge(g, 2, 4, -1);
     mgraph_add_edge(g, 5, 6, -1);
     mgraph_add_edge(g, 2, 6, -1);
