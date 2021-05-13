@@ -6,12 +6,7 @@
 #include "../libs/map/mapGraph.h"
 #include "../libs/map/list.h"
 
-gfloat f (gfloat x)
-{
-    return 0.2 * x;
-}
-
-void on_draw( GtkWidget *widget, cairo_t *cr, app_widgets *app_wdgts)
+void on_draw(GtkWidget *widget, cairo_t *cr, app_widgets *app_wdgts)
 {
     //Get elements
     app_wdgts->drawing_area = widget;
@@ -91,3 +86,19 @@ void on_draw( GtkWidget *widget, cairo_t *cr, app_widgets *app_wdgts)
     }
 }
 
+void update_title(app_widgets *app_wdgts)
+{
+    char *title = (char *)malloc(sizeof(char) * strlen(app_wdgts->map->name) + 4);
+    if (app_wdgts->map->save_state == 1)
+    {
+        sprintf(title, "* %s", app_wdgts->map->name);
+    }
+    else
+    {
+        sprintf(title, "%s", app_wdgts->map->name);
+    }
+    
+    gtk_window_set_title(GTK_WINDOW(app_wdgts->window), title);
+
+    free(title);
+}

@@ -172,8 +172,15 @@ struct map *mgraph_load(char *file)
             nblines = atoi(rest);
             map = (struct map*)malloc(sizeof(struct map) + 
                             sizeof(struct line*) * nblines);
-            
+            map->current_line = (struct line*)malloc(sizeof(struct line*));
+            map->save_state = 0;
             map->nblines = nblines;
+
+            char *filename = (char *)malloc(strlen(file) * sizeof(char) + 2);
+            strcpy(filename, file);
+            map->filename = filename;
+            char *name = "My Map";
+            map->name = name;
         }
         else if (strcmp(ptr, "#backgroundImg") == 0)
         {
@@ -260,15 +267,11 @@ struct map *mgraph_load(char *file)
     }
 
     fclose(fp);
-    /*if (line)
-        free(line);*/
-
     map->g = g;
-
     return map;
 }
 
-void mgraph_save(char *file, struct mgraph *g, struct line *lines[])
+int mgraph_save(const char *file, struct map *map)
 {
     FILE *fp;
 
@@ -280,45 +283,43 @@ void mgraph_save(char *file, struct mgraph *g, struct line *lines[])
 
     //Headers
 
-    printf("Not updated with new Struct\n");
-    return;
-
-    //fprintf(fp, "#nblines:%d", );
+    fprintf(fp, "#nblines:%d\n", map->nblines);
+    fprintf(fp, "#backgroundImg:%s\n", map->backgroundImg);
 
     fprintf(fp, "#linesName:");
-    for (int i = 0; i < 15; i++)
-        fprintf(fp, "%s,", lines[i]->name);
+    for (int i = 0; i < map->nblines; i++)
+        fprintf(fp, "%s,", map->lines[i]->name);
     fprintf(fp, "\n");
 
     fprintf(fp, "#linesColor:");
-    for (int i = 0; i < 15; i++)
-        fprintf(fp, "%s,", lines[i]->color);
+    for (int i = 0; i < map->nblines; i++)
+        fprintf(fp, "%s,", map->lines[i]->color);
     fprintf(fp, "\n");
 
     fprintf(fp, "#stationsName:");
-    for (int i = 0; i < g->order; i++)
-        fprintf(fp, "%s,", g->stations[i]->name);
+    for (int i = 0; i < map->g->order; i++)
+        fprintf(fp, "%s,", map->g->stations[i]->name);
     fprintf(fp, "\n");
 
     fprintf(fp, "#stationsPosX:");
-    for (int i = 0; i < g->order; i++)
-        fprintf(fp, "%f ", g->stations[i]->x);
+    for (int i = 0; i < map->g->order; i++)
+        fprintf(fp, "%f ", map->g->stations[i]->x);
     fprintf(fp, "\n");
 
     fprintf(fp, "#stationsPosY:");
-    for (int i = 0; i < g->order; i++)
-        fprintf(fp, "%f ", g->stations[i]->y);
+    for (int i = 0; i < map->g->order; i++)
+        fprintf(fp, "%f ", map->g->stations[i]->y);
     fprintf(fp, "\n");
 
     //Body
 
-    fprintf(fp, "%d\n", g->directed);
-    fprintf(fp, "%d\n", g->order);
+    fprintf(fp, "%d\n", map->g->directed);
+    fprintf(fp, "%d\n", map->g->order);
 
     //TODO: opti: only one edge when for no directed graph
-    for (int i = 0; i < g->order; i++)
+    for (int i = 0; i < map->g->order; i++)
     {
-        struct list *list = g->stations[i]->adjs;
+        struct list *list = map->g->stations[i]->adjs;
         while (list->next != NULL)
         {
             list = list->next;
@@ -327,7 +328,7 @@ void mgraph_save(char *file, struct mgraph *g, struct line *lines[])
     }
 
     fclose(fp);
-    //return error/success value ?
+    return 1;
 }
 
 void mgraph_print(struct mgraph *g)

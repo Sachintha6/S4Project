@@ -4,8 +4,12 @@
 struct map
 {
     int nblines;
+    int save_state;
+    const char *filename;
+    const char *name;
     const char *backgroundImg;
     struct mgraph *g;
+    struct line *current_line;
     struct line *lines[];
 };
 
@@ -47,7 +51,7 @@ int mgraph_get_station_by_position(struct mgraph *g, double x, double y, double 
 
 //Load/save
 struct map *mgraph_load(char *file);
-void mgraph_save(char *file, struct mgraph *g, struct line *lines[]);
+int mgraph_save(const char *file, struct map *map);
 
 //Display
 void mgraph_print(struct mgraph *g);
