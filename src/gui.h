@@ -4,13 +4,15 @@
 #include <gtk/gtk.h>
 
 typedef struct {
-    GtkWidget *window;
-    GtkWidget *dlg_file_choose;
-    GtkWidget *dlg_save_as;   
-    GtkWidget *drawing_area;
+    GtkWidget *window; 
+    GtkWidget *drawing_area;  
     GtkWidget *menuitm;
     GtkWidget *combo_lines;
+    GtkWidget *dlg_file_choose;
+    GtkWidget *dlg_save_as;
     GtkWidget *entry_save_as;
+    GtkWidget *dlg_rename;
+    GtkWidget *entry_rename;
     GdkRGBA *newcolor;
     cairo_t *cr;
     cairo_surface_t *bg_image;

@@ -163,6 +163,16 @@ void on_da_click(GtkWidget *widget, GdkEventButton *event, app_widgets *app_wdgt
         if (id != -1)
         {
             printf("Rename Station n°%d\n", id);
+
+            gtk_widget_show(GTK_WIDGET(app_wdgts->dlg_rename));
+    
+            if (gtk_dialog_run(GTK_DIALOG (app_wdgts->dlg_rename)) == GTK_RESPONSE_OK) 
+            {
+                const gchar *entry = gtk_entry_get_text(GTK_ENTRY(app_wdgts->entry_rename));
+                app_wdgts->map->g->stations[id]->name = entry;
+            }
+
+            gtk_widget_hide( GTK_WIDGET(app_wdgts->dlg_rename));
         }
     }
     else if (app_wdgts->tool == 1)
@@ -199,6 +209,7 @@ void on_da_click(GtkWidget *widget, GdkEventButton *event, app_widgets *app_wdgt
     }
     else if (app_wdgts->tool == 3)
     {
+        //Moove station
         int id = mgraph_get_station_by_position(app_wdgts->map->g, x, y, 10);
         
         if (id != -1)
@@ -207,13 +218,19 @@ void on_da_click(GtkWidget *widget, GdkEventButton *event, app_widgets *app_wdgt
             {
                 app_wdgts->selected_sid = id;
             }
+            else if (app_wdgts->selected_sid == id)
+            {
+                app_wdgts->selected_sid = -1;
+            }
         }
         else
         {
-            //deselect si reclique + verif que deja select
-            app_wdgts->map->g->stations[app_wdgts->selected_sid]->x = x;
-            app_wdgts->map->g->stations[app_wdgts->selected_sid]->y = y;
-            app_wdgts->selected_sid = -1;
+            if (app_wdgts->selected_sid != -1)
+            {
+                app_wdgts->map->g->stations[app_wdgts->selected_sid]->x = x;
+                app_wdgts->map->g->stations[app_wdgts->selected_sid]->y = y;
+                app_wdgts->selected_sid = -1;
+            }
         }
     }
     else if (app_wdgts->tool == 4)
@@ -227,6 +244,7 @@ void on_da_click(GtkWidget *widget, GdkEventButton *event, app_widgets *app_wdgt
     }
     else if (app_wdgts->tool == 5)
     {
+        //Remove Section
         int id = mgraph_get_station_by_position(app_wdgts->map->g, x, y, 10);
         
         if (id != -1)
