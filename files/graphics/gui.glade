@@ -38,16 +38,6 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkImageMenuItem" id="menuitm_import">
-                        <property name="label">Import</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
-                        <signal name="activate" handler="on_menuitm_import_activate" swapped="no"/>
-                      </object>
-                    </child>
-                    <child>
                       <object class="GtkImageMenuItem">
                         <property name="label">gtk-save</property>
                         <property name="visible">True</property>
@@ -81,6 +71,44 @@
                 </child>
               </object>
             </child>
+            
+            <child>
+              <object class="GtkMenuItem">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Map</property>
+                <property name="use_underline">True</property>
+                <child type="submenu">
+                  <object class="GtkMenu">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    
+                    <child>
+                      <object class="GtkImageMenuItem" id="menuitm_import">
+                        <property name="label">Import</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="use_underline">True</property>
+                        <property name="use_stock">True</property>
+                        <signal name="activate" handler="on_menuitm_import_activate" swapped="no"/>
+                      </object>
+                    </child>
+
+                    <child>
+                      <object class="GtkImageMenuItem">
+                        <property name="label">Add a new line</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="use_underline">True</property>
+                        <property name="use_stock">True</property>
+                        <signal name="activate" handler="on_menuitm_newline_activate" swapped="no"/>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+
             <child>
               <object class="GtkMenuItem">
                 <property name="visible">True</property>
@@ -319,6 +347,8 @@
       </object>
     </child>
   </object>
+
+
   <object class="GtkFileChooserDialog" id="dlg_file_choose">
     <property name="can_focus">False</property>
     <property name="type_hint">dialog</property>
@@ -337,7 +367,8 @@
                 <property name="label">Open</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
+                <property name="receives_default">Yes</property>
+                <property name="can_default">Yes</property>
               </object>
               <packing>
                 <property name="expand">True</property>
@@ -350,7 +381,7 @@
                 <property name="label">Cancel</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
+                <property name="receives_default">False</property>
               </object>
               <packing>
                 <property name="expand">True</property>
@@ -375,6 +406,8 @@
       <action-widget response="-7">Cancel_btn</action-widget>
     </action-widgets>
   </object>
+
+
   <object class="GtkFileChooserDialog" id="dlg_save_as">
     <property name="can_focus">False</property>
     <property name="type_hint">dialog</property>
@@ -394,6 +427,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <property name="can_default">Yes</property>
               </object>
               <packing>
                 <property name="expand">True</property>
@@ -422,7 +456,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkEntry">
+          <object class="GtkEntry" id="entry_save_as">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
           </object>
@@ -439,7 +473,103 @@
       <action-widget response="-7">Cancel_sa_btn</action-widget>
     </action-widgets>
   </object>
-  <object class="GtkDialog">
+
+
+
+  <object class="GtkDialog" id="dlg_rename">
+    <property name="can_focus">False</property>
+    <property name="type_hint">dialog</property>
+    <child type="titlebar">
+      <placeholder/>
+    </child>
+    <child internal-child="vbox">
+      <object class="GtkBox">
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">2</property>
+        <child internal-child="action_area">
+          <object class="GtkButtonBox">
+            <property name="can_focus">False</property>
+            <property name="layout_style">end</property>
+            <child>
+              <object class="GtkButton" id="rename_ok_btn">
+                <property name="label" translatable="yes">Ok</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="can_default">Yes</property>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="rename_close_btn">
+                <property name="label" translatable="yes">Fermer</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="orientation">vertical</property>
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Choose name</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkEntry" id="entry_rename">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+    <action-widgets>
+      <action-widget response="-5">rename_ok_btn</action-widget>
+      <action-widget response="-7">rename_close_btn</action-widget>
+    </action-widgets>
+  </object>
+
+
+  <object class="GtkDialog" id="dlg_new_line">
     <property name="can_focus">False</property>
     <property name="type_hint">dialog</property>
     <child type="titlebar">

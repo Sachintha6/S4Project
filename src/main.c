@@ -37,6 +37,7 @@ int main (int argc, char **argv)
     widgets->dlg_file_choose = GTK_WIDGET( gtk_builder_get_object(builder, "dlg_file_choose"));
     widgets->dlg_save_as = GTK_WIDGET( gtk_builder_get_object(builder, "dlg_save_as"));
     widgets->dlg_rename = GTK_WIDGET( gtk_builder_get_object(builder, "dlg_rename"));
+    widgets->dlg_new_line = GTK_WIDGET( gtk_builder_get_object(builder, "dlg_new_line"));
     widgets->entry_rename = GTK_WIDGET( gtk_builder_get_object(builder, "entry_rename"));
     widgets->entry_save_as = GTK_WIDGET( gtk_builder_get_object(builder, "entry_save_as"));
     widgets->drawing_area = GTK_WIDGET( gtk_builder_get_object(builder, "map_drawing"));

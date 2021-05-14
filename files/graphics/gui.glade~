@@ -439,6 +439,9 @@
       <action-widget response="-7">Cancel_sa_btn</action-widget>
     </action-widgets>
   </object>
+
+
+  
   <object class="GtkDialog">
     <property name="can_focus">False</property>
     <property name="type_hint">dialog</property>

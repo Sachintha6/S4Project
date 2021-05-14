@@ -119,6 +119,12 @@ void on_menuitm_saveas_activate(GtkMenuItem *menuitem, app_widgets *app_wdgts)
     gtk_widget_hide(app_wdgts->dlg_save_as);
 }
 
+void on_menuitm_newline_activate(GtkMenuItem *menuitem, app_widgets *app_wdgts)
+{
+    printf("You want to add a new line ?\n");
+    gtk_widget_show(app_wdgts->dlg_new_line);
+}
+
 void on_menuitm_close_activate(GtkMenuItem *menuitem, app_widgets *app_wdgts)
 {
     gtk_main_quit();
