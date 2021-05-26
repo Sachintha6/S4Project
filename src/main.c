@@ -39,6 +39,8 @@ int main (int argc, char **argv)
     widgets->dlg_rename = GTK_WIDGET( gtk_builder_get_object(builder, "dlg_rename"));
     widgets->dlg_new_line = GTK_WIDGET( gtk_builder_get_object(builder, "dlg_new_line"));
     widgets->entry_rename = GTK_WIDGET( gtk_builder_get_object(builder, "entry_rename"));
+    widgets->entry_newline = GTK_WIDGET( gtk_builder_get_object(builder, "entry_newline"));
+    widgets->color_newline = GTK_WIDGET( gtk_builder_get_object(builder, "color_newline"));
     widgets->entry_save_as = GTK_WIDGET( gtk_builder_get_object(builder, "entry_save_as"));
     widgets->drawing_area = GTK_WIDGET( gtk_builder_get_object(builder, "map_drawing"));
     widgets->bg_image = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, 10, 10);

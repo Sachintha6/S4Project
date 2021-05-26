@@ -13,6 +13,8 @@ typedef struct {
     GtkWidget *entry_save_as;
     GtkWidget *dlg_rename;
     GtkWidget *entry_rename;
+    GtkWidget *entry_newline;
+    GtkWidget *color_newline;
     GtkWidget *dlg_new_line;
     GdkRGBA *newcolor;
     cairo_t *cr;

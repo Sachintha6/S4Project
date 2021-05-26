@@ -121,8 +121,16 @@ void on_menuitm_saveas_activate(GtkMenuItem *menuitem, app_widgets *app_wdgts)
 
 void on_menuitm_newline_activate(GtkMenuItem *menuitem, app_widgets *app_wdgts)
 {
-    printf("You want to add a new line ?\n");
     gtk_widget_show(app_wdgts->dlg_new_line);
+    
+    if (gtk_dialog_run(GTK_DIALOG (app_wdgts->dlg_new_line)) == GTK_RESPONSE_OK) 
+    {
+        const gchar *entry = gtk_entry_get_text(GTK_ENTRY(app_wdgts->entry_newline));
+        printf("---%s\n", entry);
+        //app_wdgts->map->g->stations[id]->name = entry;
+    }
+
+    gtk_widget_hide(GTK_WIDGET(app_wdgts->dlg_new_line));
 }
 
 void on_menuitm_close_activate(GtkMenuItem *menuitem, app_widgets *app_wdgts)
@@ -168,14 +176,16 @@ void on_da_click(GtkWidget *widget, GdkEventButton *event, app_widgets *app_wdgt
         
         if (id != -1)
         {
-            printf("Rename Station n°%d\n", id);
+            //printf("Rename Station n°%d\n", id);
 
             gtk_widget_show(GTK_WIDGET(app_wdgts->dlg_rename));
+            gtk_entry_set_text(GTK_ENTRY(app_wdgts->entry_rename), app_wdgts->map->g->stations[id]->name);
     
             if (gtk_dialog_run(GTK_DIALOG (app_wdgts->dlg_rename)) == GTK_RESPONSE_OK) 
             {
-                const gchar *entry = gtk_entry_get_text(GTK_ENTRY(app_wdgts->entry_rename));
-                app_wdgts->map->g->stations[id]->name = entry;
+                gchar *entry = (gchar *)gtk_entry_get_text(GTK_ENTRY(app_wdgts->entry_rename));
+                app_wdgts->map->g->stations[id]->name = (char *)realloc((void *)app_wdgts->map->g->stations[id]->name, strlen(entry) * sizeof(char) + 2);
+                strcpy((char *)app_wdgts->map->g->stations[id]->name, entry);
             }
 
             gtk_widget_hide( GTK_WIDGET(app_wdgts->dlg_rename));
