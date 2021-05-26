@@ -585,7 +585,7 @@
             <property name="can_focus">False</property>
             <property name="layout_style">end</property>
             <child>
-              <object class="GtkButton">
+              <object class="GtkButton" id="newline_ok_btn">
                 <property name="label" translatable="yes">Ok</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -598,7 +598,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkButton">
+              <object class="GtkButton" id="newline_close_btn">
                 <property name="label" translatable="yes">Fermer</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -635,7 +635,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkEntry">
+              <object class="GtkEntry" id="entry_newline">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
               </object>
@@ -646,7 +646,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkColorChooserWidget">
+              <object class="GtkColorChooserWidget" id="color_newline">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="rgba">rgb(255,255,255)</property>
@@ -666,5 +666,9 @@
         </child>
       </object>
     </child>
+    <action-widgets>
+      <action-widget response="-5">newline_ok_btn</action-widget>
+      <action-widget response="-7">newline_close_btn</action-widget>
+    </action-widgets>
   </object>
 </interface>

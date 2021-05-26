@@ -22,7 +22,7 @@ struct mgraph
 
 struct station
 {
-    const char *name;
+    char *name;
     double x;
     double y;
     int state;

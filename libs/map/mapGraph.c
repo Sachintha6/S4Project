@@ -82,7 +82,8 @@ struct mgraph *mgraph_add_vertex(struct mgraph *g, char *name, double x, double 
     g->order += 1;
 
     g->stations[g->order - 1] = (struct station*)malloc(sizeof(struct station));
-    g->stations[g->order - 1]->name = name;
+    g->stations[g->order - 1]->name = (char *)malloc(sizeof(char) * strlen(name) + 2);
+    strcpy(g->stations[g->order - 1]->name, name);
     g->stations[g->order - 1]->x = x;
     g->stations[g->order - 1]->y = y;
     g->stations[g->order - 1]->state = 1;
@@ -247,7 +248,10 @@ struct map *mgraph_load(char *file)
 
         g->stations[i]->x = atof(subp);
         g->stations[i]->y = atof(subq);
-        g->stations[i]->name = subd;
+        g->stations[i]->name = (char *)malloc(sizeof(char) * strlen(subd) + 2);
+        //g->stations[i]->name = subd;
+        strcpy(g->stations[i]->name, subd);
+
     }
 
     while (getline(&line, &len, fp) != -1)

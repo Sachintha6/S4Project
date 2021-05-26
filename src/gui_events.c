@@ -123,11 +123,25 @@ void on_menuitm_newline_activate(GtkMenuItem *menuitem, app_widgets *app_wdgts)
 {
     gtk_widget_show(app_wdgts->dlg_new_line);
     
-    if (gtk_dialog_run(GTK_DIALOG (app_wdgts->dlg_new_line)) == GTK_RESPONSE_OK) 
+    if (gtk_dialog_run(GTK_DIALOG(app_wdgts->dlg_new_line)) == GTK_RESPONSE_OK) 
     {
         const gchar *entry = gtk_entry_get_text(GTK_ENTRY(app_wdgts->entry_newline));
-        printf("---%s\n", entry);
-        //app_wdgts->map->g->stations[id]->name = entry;
+        gtk_color_chooser_get_rgba(GTK_COLOR_CHOOSER(app_wdgts->color_newline), app_wdgts->newcolor);
+        char *color = (char *)malloc(sizeof(char) * 8);
+        char *linename = (char *)malloc(sizeof(char) * strlen(entry) + 2);
+        sprintf(color, "#%02X%02X%02X", (int)(app_wdgts->newcolor->red*255), (int)(app_wdgts->newcolor->green*255), (int)(app_wdgts->newcolor->blue*255));
+        sprintf(linename, "%s", entry);
+        
+        app_wdgts->map->nblines += 1;
+        app_wdgts->map = (struct map*)realloc(app_wdgts->map, 
+                    sizeof(struct map) + sizeof(struct line*) * app_wdgts->map->nblines);
+        app_wdgts->map->lines[app_wdgts->map->nblines-1] = (struct line*)malloc(sizeof(struct line));
+        app_wdgts->map->lines[app_wdgts->map->nblines-1]->name = linename;
+        app_wdgts->map->lines[app_wdgts->map->nblines-1]->color = color;
+
+        char * comboId = (char *)malloc(sizeof(char) * 4);
+        sprintf(comboId, "%d", app_wdgts->map->nblines - 1);
+        gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(app_wdgts->combo_lines), comboId, linename);
     }
 
     gtk_widget_hide(GTK_WIDGET(app_wdgts->dlg_new_line));
@@ -184,7 +198,9 @@ void on_da_click(GtkWidget *widget, GdkEventButton *event, app_widgets *app_wdgt
             if (gtk_dialog_run(GTK_DIALOG (app_wdgts->dlg_rename)) == GTK_RESPONSE_OK) 
             {
                 gchar *entry = (gchar *)gtk_entry_get_text(GTK_ENTRY(app_wdgts->entry_rename));
-                app_wdgts->map->g->stations[id]->name = (char *)realloc((void *)app_wdgts->map->g->stations[id]->name, strlen(entry) * sizeof(char) + 2);
+                app_wdgts->map->g->stations[id]->name = (char *)realloc(
+                        (void *)app_wdgts->map->g->stations[id]->name, 
+                        strlen(entry) * sizeof(char) + 2);
                 strcpy((char *)app_wdgts->map->g->stations[id]->name, entry);
             }
 
