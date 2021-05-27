@@ -123,6 +123,24 @@ void on_menuitm_saveas_activate(GtkMenuItem *menuitem, app_widgets *app_wdgts)
     gtk_widget_hide(app_wdgts->dlg_save_as);
 }
 
+void on_menuitm_rnmap_activate(GtkMenuItem *menuitem, app_widgets *app_wdgts)
+{
+    gtk_widget_show(GTK_WIDGET(app_wdgts->dlg_rename));
+    gtk_entry_set_text(GTK_ENTRY(app_wdgts->entry_rename), app_wdgts->map->name);
+    
+    if (gtk_dialog_run(GTK_DIALOG (app_wdgts->dlg_rename)) == GTK_RESPONSE_OK) 
+    {
+        gchar *entry = (gchar *)gtk_entry_get_text(GTK_ENTRY(app_wdgts->entry_rename));
+        app_wdgts->map->name = (char *)realloc((void *)app_wdgts->map->name, 
+                    strlen(entry) * sizeof(char) + 2);
+        strcpy((char *)app_wdgts->map->name, entry);
+    }
+
+    gtk_widget_hide( GTK_WIDGET(app_wdgts->dlg_rename));
+    app_wdgts->map->save_state = 1;
+    update_title(app_wdgts);
+}
+
 void on_menuitm_newline_activate(GtkMenuItem *menuitem, app_widgets *app_wdgts)
 {
     gtk_widget_show(app_wdgts->dlg_new_line);

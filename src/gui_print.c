@@ -88,28 +88,6 @@ void on_draw(GtkWidget *widget, cairo_t *cr, app_widgets *app_wdgts)
 
 void update_title(app_widgets *app_wdgts)
 {
-    /*if (app_wdgts->map->name == NULL || strcmp(app_wdgts->map->name, ""))
-    {
-        //char *title = "MUTN - Any Map";
-        gtk_window_set_title(GTK_WINDOW(app_wdgts->window), "MUTN - Any Map");
-    }
-    else
-    {
-        char *title = (char *)malloc(sizeof(char) * strlen(app_wdgts->map->name) + 4);
-        
-        if (app_wdgts->map->save_state == 1)
-        {
-            sprintf(title, "* %s", app_wdgts->map->name);
-        }
-        else
-        {
-            sprintf(title, "%s", app_wdgts->map->name);
-        }
-       
-        gtk_window_set_title(GTK_WINDOW(app_wdgts->window), title);
-        free(title);
-    }*/
-
     char *title = (char *)malloc(sizeof(char) * strlen(app_wdgts->map->name) + 4);
     if (app_wdgts->map->save_state == 1)
     {

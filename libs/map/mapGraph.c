@@ -180,8 +180,14 @@ struct map *mgraph_load(char *file)
             char *filename = (char *)malloc(strlen(file) * sizeof(char) + 2);
             strcpy(filename, file);
             map->filename = filename;
-            char *name = "My Map";
-            map->name = name;
+            //map->name = (char *)malloc(sizeof(char) * 8);
+            //strcpy((char *)map->name, "My Map");
+        }
+        else if (strcmp(ptr, "#mapName") == 0)
+        {
+            char *name = strtok(rest, "\n");
+            map->name = (char *)malloc(sizeof(char) * strlen(name) + 2);
+            strcpy((char *)map->name, name);
         }
         else if (strcmp(ptr, "#backgroundImg") == 0)
         {
@@ -288,6 +294,7 @@ int mgraph_save(const char *file, struct map *map)
     //Headers
 
     fprintf(fp, "#nblines:%d\n", map->nblines);
+    fprintf(fp, "#mapName:%s\n", map->name);
     fprintf(fp, "#backgroundImg:%s\n", map->backgroundImg);
 
     fprintf(fp, "#linesName:");
