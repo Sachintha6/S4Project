@@ -35,6 +35,7 @@ void on_menuitm_open_activate(GtkMenuItem *menuitem, app_widgets *app_wdgts)
     }
 
     gtk_widget_hide(app_wdgts->dlg_file_choose);
+    update_title(app_wdgts);
 }
 
 void on_menuitm_import_activate(GtkMenuItem *menuitem, app_widgets *app_wdgts)
@@ -99,14 +100,17 @@ void on_menuitm_saveas_activate(GtkMenuItem *menuitem, app_widgets *app_wdgts)
         }
         else
         {
-            char *newfile = (char *)malloc(sizeof(char)*(strlen(folder) + strlen(entry) + 6));
-            sprintf(newfile, "%s/%s.gra", folder, entry);
+            app_wdgts->map->filename = (char *)realloc((char *)app_wdgts->map->filename,
+                        sizeof(char) * (strlen(folder) + strlen(entry) + 6));
+            sprintf((char *)app_wdgts->map->filename, "%s/%s.gra", folder, entry);
 
-            printf("Save as Newfile: %s\n", newfile);
-            if (mgraph_save(newfile, app_wdgts->map) != 1)
+            printf("Save as Newfile: %s\n", app_wdgts->map->filename);
+            if (mgraph_save(app_wdgts->map->filename, app_wdgts->map) != 1)
                 err(EXIT_FAILURE, "Error while saving\n");
 
-            free(newfile);
+            /*app_wdgts->map->filename = (char *)realloc(app_wdgts->map->filename,
+                        sizeof(char) * (strlen(folder) + strlen(entry)) + 2);
+*/
         }   
 
         g_free(folder);
@@ -145,6 +149,37 @@ void on_menuitm_newline_activate(GtkMenuItem *menuitem, app_widgets *app_wdgts)
     }
 
     gtk_widget_hide(GTK_WIDGET(app_wdgts->dlg_new_line));
+}
+
+void on_menuitm_upline_activate(GtkMenuItem *menuitem, app_widgets *app_wdgts)
+{
+    gtk_widget_show(app_wdgts->dlg_new_line);
+    gtk_entry_set_text(GTK_ENTRY(app_wdgts->entry_newline), app_wdgts->map->current_line->name);
+    gdk_rgba_parse(app_wdgts->newcolor, app_wdgts->map->current_line->color);
+    gtk_color_chooser_set_rgba(GTK_COLOR_CHOOSER(app_wdgts->color_newline), app_wdgts->newcolor);
+    
+    if (gtk_dialog_run(GTK_DIALOG(app_wdgts->dlg_new_line)) == GTK_RESPONSE_OK) 
+    {
+        const gchar *entry = gtk_entry_get_text(GTK_ENTRY(app_wdgts->entry_newline));
+        gtk_color_chooser_get_rgba(GTK_COLOR_CHOOSER(app_wdgts->color_newline), app_wdgts->newcolor);
+        char *color = (char *)malloc(sizeof(char) * 8);
+        char *linename = (char *)malloc(sizeof(char) * strlen(entry) + 2);
+        sprintf(color, "#%02X%02X%02X", (int)(app_wdgts->newcolor->red*255), (int)(app_wdgts->newcolor->green*255), (int)(app_wdgts->newcolor->blue*255));
+        sprintf(linename, "%s", entry);
+        
+        app_wdgts->map->lines[app_wdgts->map->current_line->idline]->name = linename;
+        app_wdgts->map->lines[app_wdgts->map->current_line->idline]->color = color;
+
+        app_wdgts->map->current_line->name = linename;
+        app_wdgts->map->current_line->color = color;
+    }
+
+    gtk_widget_hide(GTK_WIDGET(app_wdgts->dlg_new_line));
+}
+
+void on_menuitm_rmline_activate(GtkMenuItem *menuitem, app_widgets *app_wdgts)
+{
+    printf("Remove line\n");
 }
 
 void on_menuitm_close_activate(GtkMenuItem *menuitem, app_widgets *app_wdgts)

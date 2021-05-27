@@ -19,6 +19,7 @@ int main (int argc, char **argv)
     widgets->selected_sid = -1;
     widgets->map = (struct map*)malloc(sizeof(struct map));
     widgets->map->g = mgraph_init(1, 0);
+    widgets->map->name = "MUTN - Any Map";
 
     gtk_init(&argc, &argv);
 
@@ -45,12 +46,13 @@ int main (int argc, char **argv)
     widgets->drawing_area = GTK_WIDGET( gtk_builder_get_object(builder, "map_drawing"));
     widgets->bg_image = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, 10, 10);
     widgets->combo_lines = GTK_WIDGET(gtk_builder_get_object(builder, "comboboxlines"));
-
+    gtk_color_chooser_set_use_alpha(GTK_COLOR_CHOOSER(widgets->color_newline), TRUE);
 
     gtk_builder_connect_signals(builder, widgets);
     g_object_unref(builder);
 
     gtk_widget_show(GTK_WIDGET(window));
+    update_title(widgets);
     gtk_main();
 
     g_slice_free(app_widgets, widgets);
