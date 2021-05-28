@@ -84,8 +84,19 @@
                     <property name="can_focus">False</property>
                     
                     <child>
+                      <object class="GtkImageMenuItem" id="menuitm_rnmap">
+                        <property name="label">Rename map</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="use_underline">True</property>
+                        <property name="use_stock">True</property>
+                        <signal name="activate" handler="on_menuitm_rnmap_activate" swapped="no"/>
+                      </object>
+                    </child>
+
+                    <child>
                       <object class="GtkImageMenuItem" id="menuitm_import">
-                        <property name="label">Import</property>
+                        <property name="label">Import background</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
@@ -104,6 +115,29 @@
                         <signal name="activate" handler="on_menuitm_newline_activate" swapped="no"/>
                       </object>
                     </child>
+
+                    <child>
+                      <object class="GtkImageMenuItem">
+                        <property name="label">Update line</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="use_underline">True</property>
+                        <property name="use_stock">True</property>
+                        <signal name="activate" handler="on_menuitm_upline_activate" swapped="no"/>
+                      </object>
+                    </child>
+
+                    <child>
+                      <object class="GtkImageMenuItem">
+                        <property name="label">Remove line</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="use_underline">True</property>
+                        <property name="use_stock">True</property>
+                        <signal name="activate" handler="on_menuitm_rmline_activate" swapped="no"/>
+                      </object>
+                    </child>
+
                   </object>
                 </child>
               </object>
@@ -534,7 +568,7 @@
               <object class="GtkLabel">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Choose name</property>
+                <property name="label" translatable="yes">Enter new name</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -626,7 +660,7 @@
               <object class="GtkLabel">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Choose name</property>
+                <property name="label" translatable="yes">Enter new name</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -649,6 +683,7 @@
               <object class="GtkColorChooserWidget" id="color_newline">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="show-editor">True</property>
                 <property name="rgba">rgb(255,255,255)</property>
               </object>
               <packing>
