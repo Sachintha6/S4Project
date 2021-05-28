@@ -9,12 +9,13 @@ int main (int argc, char **argv)
 {
     GtkBuilder *builder;
     GObject *window;
+    GObject *da_obj;
     GError *error = NULL;
     
     //Init struct
     app_widgets *widgets = g_slice_new(app_widgets);
     widgets->newcolor = (GdkRGBA*)malloc(sizeof(GdkRGBA));
-    widgets->zoom = 100.0;
+    widgets->zoom = 30.0;
     widgets->map = (struct map*)malloc(sizeof(struct map));
     widgets->map->g = mgraph_init(1, 0);
     widgets->map->name = "MUTN - Any Map";
@@ -33,10 +34,22 @@ int main (int argc, char **argv)
 
     // Get objects from UI
     widgets->window = GTK_WIDGET(window);
-    widgets->drawing_area = GTK_WIDGET( gtk_builder_get_object(builder, "map_drawing"));
+    da_obj = gtk_builder_get_object(builder, "map_drawing");
+    widgets->drawing_area = GTK_WIDGET(da_obj);
     widgets->bg_image = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, 10, 10);
 
+
+    /*****CSS****/
+    GtkCssProvider *provider = gtk_css_provider_new ();
+    gtk_css_provider_load_from_path (provider, "../files/css/app.css", NULL);
+
+    gtk_style_context_add_provider_for_screen(gdk_screen_get_default(),
+                                GTK_STYLE_PROVIDER(provider), 600);
+                                
+    /*****CSS****/
+
     gtk_builder_connect_signals(builder, widgets);
+    g_signal_connect(G_OBJECT(da_obj), "key_press_event", G_CALLBACK(on_key_press), widgets);
     g_object_unref(builder);
     gtk_widget_show(GTK_WIDGET(window));
 
@@ -44,9 +57,7 @@ int main (int argc, char **argv)
     widgets->bg_image = cairo_image_surface_create_from_png(widgets->map->backgroundImg);
 
     mgraph_print(widgets->map->g);
-    //gtk_widget_queue_draw(GTK_WIDGET(widgets->drawing_area));
 
-    //update_title(widgets);
     gtk_main();
 
     g_slice_free(app_widgets, widgets);

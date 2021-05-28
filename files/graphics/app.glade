@@ -4,8 +4,8 @@
   <requires lib="gtk+" version="3.20"/>
   <object class="GtkWindow" id="Interface">
     <property name="can_focus">False</property>
-    <property name="default_width">1280</property>
-    <property name="default_height">720</property>
+    <property name="default_width">360</property>
+    <property name="default_height">640</property>
     <child type="titlebar">
       <placeholder/>
     </child>
@@ -14,60 +14,120 @@
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <child>
-          <object class="GtkGrid">
-            <property name="width_request">500</property>
-            <property name="height_request">500</property>
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <child>
-              <object class="GtkVPaned" id="vpaned1">
+            <object class="GtkVBox" id="vpaned">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <child>
-                  <object class="GtkScrolledWindow" id="map-container">
-                    <property name="width_request">375</property>
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="shadow_type">in</property>
-                    <property name="min_content_width">400</property>
-                    <property name="min_content_height">400</property>
-                    <property name="max_content_width">400</property>
-                    <property name="max_content_height">400</property>
-                    <child>
-                      <object class="GtkViewport">
+                    <object class="GtkScrolledWindow" id="map-container">
+                        <property name="width_request">375</property>
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
+                        <property name="can_focus">True</property>
+                        <property name="shadow_type">in</property>
+                        <property name="min_content_width">200</property>
+                        <property name="min_content_height">340</property>
+                        <property name="max_content_width">200</property>
+                        <property name="max_content_height">340</property>
                         <child>
-                          <object class="GtkDrawingArea" id="map-drawing">
-                            <property name="visible">True</property>
-                            <property name="app_paintable">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="hexpand">True</property>
-                            <property name="vexpand">True</property>
-                            <signal name="draw" handler="on_draw" swapped="no"/>
-                          </object>
+                            <object class="GtkViewport">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <child>
+                                    <object class="GtkDrawingArea" id="map-drawing">
+                                        <property name="visible">True</property>
+                                        <property name="app_paintable">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="hexpand">True</property>
+                                        <property name="vexpand">True</property>
+                                        <signal name="draw" handler="on_draw" swapped="no"/>
+                                        <signal name="key-press-event" handler="on_key_press" swapped="no"/>
+                                    </object>
+                                </child>
+                            </object>
                         </child>
-                      </object>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="resize">True</property>
-                    <property name="shrink">True</property>
-                  </packing>
+                        <style>
+                            <class name="sc-map"/>
+                        </style>
+                    </object>
+                    <packing>
+                        <property name="position">0</property>
+                    </packing>
                 </child>
-              </object>
-              <packing>
+                <child>
+                    <object class="GtkVBox" id="vpaned2">
+                        <property name="height_request">60</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <child>
+                            <object class="GtkEntry" id="entry1">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="invisible_char">●</property>
+                                <style>
+                                    <class name="input"/>
+                                </style>
+                            </object>
+                        </child>
+                        <child>
+                            <object class="GtkEntry" id="entry2">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="invisible_char">●</property>
+                                <style>
+                                    <class name="input"/>
+                                </style>
+                            </object>
+                        </child>
+                        <style>
+                            <class name="sc-input"/>
+                        </style>
+                    </object>
+                    <packing>
+                        <property name="position">3</property>
+                    </packing>
+                </child>
+                <child>
+                    <object class="GtkScrolledWindow" id="ride-container">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="shadow_type">in</property>
+                        <property name="min_content_width">200</property>
+                        <property name="min_content_height">200</property>
+                        <property name="max_content_width">200</property>
+                        <property name="max_content_height">200</property>
+                        <child>
+                            <object class="GtkViewport">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <child>
+                                    <object class="GtkDrawingArea" id="ride-drawing">
+                                        <property name="visible">True</property>
+                                        <property name="app_paintable">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="hexpand">True</property>
+                                        <property name="vexpand">True</property>
+                                        <signal name="draw" handler="on_ride_draw" swapped="no"/>
+                                    </object>
+                                </child>
+                            </object>
+                        </child>
+                        <style>
+                            <class name="sc-ride"/>
+                        </style>
+                    </object>
+                    <packing>
+                        <property name="position">2</property>
+                    </packing>
+                </child>
+            </object>
+            <packing>
                 <property name="left_attach">0</property>
                 <property name="top_attach">0</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">1</property>
-          </packing>
+            </packing>
         </child>
       </object>
-    </child>
+    </child><!---
+    <action-widgets>
+        <action-widget response="-7">Close</action-widget>
+    </action-widgets>-->
   </object>
 </interface>

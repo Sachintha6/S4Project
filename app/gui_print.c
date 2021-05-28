@@ -26,16 +26,13 @@ void on_draw(GtkWidget *widget, cairo_t *cr, app_widgets *app_wdgts)
     cairo_rectangle (cr, 0, 0, width, height);
     cairo_fill(cr);
     
-    //mgraph_print(app_wdgts->map->g);
-    // Draw a circle
+    // Draw sections
     for (int i = 0; i < app_wdgts->map->g->order; i++)
     {
         if (app_wdgts->map->g->stations[i]->state == 1)
         {
             double x = app_wdgts->map->g->stations[i]->x;
             double y = app_wdgts->map->g->stations[i]->y;
-
-            // Print lines
             struct list *list = app_wdgts->map->g->stations[i]->adjs;
             
             cairo_set_line_width(cr, 8.0);
@@ -57,6 +54,7 @@ void on_draw(GtkWidget *widget, cairo_t *cr, app_widgets *app_wdgts)
         }
     }
 
+    //Draw stations
     for (int i = 0; i < app_wdgts->map->g->order; i++)
     {
         if (app_wdgts->map->g->stations[i]->state == 1)
@@ -64,24 +62,22 @@ void on_draw(GtkWidget *widget, cairo_t *cr, app_widgets *app_wdgts)
             double x = app_wdgts->map->g->stations[i]->x;
             double y = app_wdgts->map->g->stations[i]->y;
 
-            // Print station
             cairo_arc (cr, x, y, 10, 0.0, 2 * 3.1415);
             cairo_set_source_rgba (cr, 0.6, 0.8, 1.0, 1);
             cairo_set_line_width(cr, 2.0);
             cairo_fill_preserve (cr);
             cairo_set_source_rgb (cr, 0.5, 0.5, 0.5);
 
-            if (app_wdgts->selected_sid == i){
-                cairo_set_source_rgb (cr, 1.0, 0.0, 0.0);
-            }
-            //cairo_stroke (cr);
-
             cairo_set_source_rgb(cr, 0.1, 0.1, 0.1); 
             cairo_set_font_size(cr, 15);
 
             cairo_move_to(cr, x+20, y+5);
-            cairo_show_text(cr, app_wdgts->map->g->stations[i]->name); 
-            //cairo_set_source_rgba(cr, 0.1, 0.1, 0.1, 0.0); 
+            cairo_show_text(cr, app_wdgts->map->g->stations[i]->name);
         }
     }
+}
+
+void on_ride_draw(GtkWidget *widget, cairo_t *cr, app_widgets *app_wdgts)
+{
+    
 }

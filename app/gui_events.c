@@ -13,5 +13,30 @@ void on_menuitm_close_activate(GtkMenuItem *menuitem, app_widgets *app_wdgts)
 
 void on_window_main_destroy()
 {
+    printf("Close\n");
     gtk_main_quit();
+}
+
+void on_key_press (GtkWidget *widget, GdkEventKey *event, app_widgets *app_wdgts)
+{
+    printf("hvejhve\n");
+    switch (event->keyval)
+    {
+        case 65451:
+            if (app_wdgts->zoom <= 300)
+            {
+                app_wdgts->zoom += 10.0;
+                gtk_widget_queue_draw(GTK_WIDGET(app_wdgts->drawing_area));
+            }
+        break;
+        case 65453:
+            if (app_wdgts->zoom >= 10)
+            {
+                app_wdgts->zoom -= 10.0;
+                gtk_widget_queue_draw(GTK_WIDGET(app_wdgts->drawing_area));
+            }
+        break;
+        default:
+        break;
+    }
 }
