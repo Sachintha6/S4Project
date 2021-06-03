@@ -6,39 +6,30 @@
 
 int main()
 {
-    struct mgraph *g = mgraph_init(1, 10);
-
-    mgraph_print(g);
+    struct mgraph *g = mgraph_init(1, 9);
     
-    mgraph_add_edge(g, 0, 2, -1);
     mgraph_add_edge(g, 0, 1, -1);
+    mgraph_add_edge(g, 1, 2, -1);
+    mgraph_add_edge(g, 2, 3, -1);
     mgraph_add_edge(g, 2, 4, -1);
+    mgraph_add_edge(g, 3, 4, -1);
+    mgraph_add_edge(g, 2, 5, -1);
+    mgraph_add_edge(g, 4, 5, -1);
     mgraph_add_edge(g, 5, 6, -1);
-    mgraph_add_edge(g, 2, 6, -1);
-    mgraph_add_edge(g, 5, 6, -1);
-
+    mgraph_add_edge(g, 0, 6, -1);
+    mgraph_add_edge(g, 3, 6, -1);
+    mgraph_add_edge(g, 6, 4, -1);
+    mgraph_add_edge(g, 1, 7, -1);
+    mgraph_add_edge(g, 0, 7, -1);
+    mgraph_add_edge(g, 7, 1, -1);
+    
     mgraph_print(g);
 
-    g = mgraph_add_vertex(g, "New1", 13.0, 0.0);
-    mgraph_print(g);
-    mgraph_add_edge(g, 10, 6, -1);
-    mgraph_add_edge(g, 10, 4, -1);
+    struct mgraph *ride = shortest_ride(g, 0, 4);
 
-    g = mgraph_add_vertex(g, "New2", 18.0, 24.0);
-    mgraph_add_edge(g, 11, 2, -1);
-    mgraph_add_edge(g, 11, 3, -1);
-    mgraph_print(g);
+    printf("vvvvvvvvvvvv\nvvv RIDE vvv\nvvvvvvvvvvvv\n");
 
-    mgraph_remove_vertex(g, 6);
-    mgraph_remove_vertex(g, 5);
-    mgraph_print(g);
-
-    g = mgraph_add_vertex(g, "New3", 18.0, 24.0);
-    mgraph_add_edge(g, 12, 2, -1);
-    mgraph_add_edge(g, 12, 10, -1);
-    mgraph_print(g);
-
-    dijkstra(g, 0);
+    mgraph_print(ride);
 
     return 0;
 }
