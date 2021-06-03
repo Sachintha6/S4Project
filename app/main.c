@@ -49,14 +49,16 @@ int main (int argc, char **argv)
     /*****CSS****/
 
     gtk_builder_connect_signals(builder, widgets);
-    g_signal_connect(G_OBJECT(da_obj), "key_press_event", G_CALLBACK(on_key_press), widgets);
     g_object_unref(builder);
     gtk_widget_show(GTK_WIDGET(window));
 
-    widgets->map = mgraph_load("../files/data/mtest.gra");
+    widgets->map = mgraph_load("../files/data/paris.gra");
+    //struct map *tmp = mgraph_load("../files/data/rmridetest.gra");
+    widgets->ride = mgraph_init(1, 10);
     widgets->bg_image = cairo_image_surface_create_from_png(widgets->map->backgroundImg);
 
     mgraph_print(widgets->map->g);
+    mgraph_print(widgets->ride);
 
     gtk_main();
 

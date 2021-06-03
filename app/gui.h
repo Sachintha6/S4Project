@@ -12,6 +12,7 @@ typedef struct {
     
     double zoom;
     struct map *map;
+    struct mgraph *ride;
 } app_widgets;
 
 void update_title(app_widgets *app_wdgts);

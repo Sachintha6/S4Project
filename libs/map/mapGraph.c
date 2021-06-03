@@ -242,22 +242,23 @@ struct map *mgraph_load(char *file)
 
     struct mgraph *g = mgraph_init(directed, order);
 
-    char *subp;
-    char *subq;
-    char *subd;
-
-    for (int i = 0; i < order; i++)
+    if (nblines != 0)
     {
-        subp = strtok_r(stationsPosX, " ", &stationsPosX);
-        subq = strtok_r(stationsPosY, " ", &stationsPosY);
-        subd = strtok_r(stationsName, ",", &stationsName);
+        char *subp;
+        char *subq;
+        char *subd;
 
-        g->stations[i]->x = atof(subp);
-        g->stations[i]->y = atof(subq);
-        g->stations[i]->name = (char *)malloc(sizeof(char) * strlen(subd) + 2);
-        //g->stations[i]->name = subd;
-        strcpy(g->stations[i]->name, subd);
+        for (int i = 0; i < order; i++)
+        {
+            subp = strtok_r(stationsPosX, " ", &stationsPosX);
+            subq = strtok_r(stationsPosY, " ", &stationsPosY);
+            subd = strtok_r(stationsName, ",", &stationsName);
 
+            g->stations[i]->x = atof(subp);
+            g->stations[i]->y = atof(subq);
+            g->stations[i]->name = (char *)malloc(sizeof(char) * strlen(subd) + 2);
+            strcpy(g->stations[i]->name, subd);
+        }
     }
 
     while (getline(&line, &len, fp) != -1)
