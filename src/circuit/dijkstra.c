@@ -68,29 +68,23 @@ struct mgraph* shortest_ride(struct mgraph *g, int src, int dst)
 
     dijkstra(g, src, pred, dist);
 
-    /*printf("=== Dist === \n");
-    for (int i = 0; i < g->order; i++)
-    {
-        printf("%d|", dist[i]);
-    }
-    printf("\n");
-
-    printf("=== Pred === \n");
-    for (int i = 0; i < g->order; i++)
-    {
-        printf("%d|", pred[i]);
-    }
-    printf("\n");*/
-
-    int len = dist[dst] + 1;
-    struct mgraph *ride = mgraph_init(1, len);
+    int len = dist[dst];
+    struct mgraph *ride = mgraph_init(1, len + 1);
     int s = dst;
     
-    for (int i = 0; i < len; i++)
+    for (int i = 0; i < len + 1; i++)
     {
+        ride->stations[len-i]->x = g->stations[s]->x;
+        ride->stations[len-i]->y = g->stations[s]->y;
+        ride->stations[len-i]->name = g->stations[s]->name;
+
+        if (len-i != 0)
+        {
+            mgraph_add_edge(ride,  len-i-1, len-i, list_find(
+                g->stations[pred[s]]->adjs, s)->idline);
+        }
+        
         s = pred[s];
-        //ride->stations[i]->x = g->stations[s]->x;
-        //ride->stations[i]->y = g->stations[s]->y;
     }
 
     return ride;

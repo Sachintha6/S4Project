@@ -6,30 +6,49 @@
 
 int main()
 {
-    struct mgraph *g = mgraph_init(1, 9);
+
+    struct map* map = mgraph_load("../../files/data/paris.gra");
     
-    mgraph_add_edge(g, 0, 1, -1);
-    mgraph_add_edge(g, 1, 2, -1);
-    mgraph_add_edge(g, 2, 3, -1);
-    mgraph_add_edge(g, 2, 4, -1);
-    mgraph_add_edge(g, 3, 4, -1);
-    mgraph_add_edge(g, 2, 5, -1);
-    mgraph_add_edge(g, 4, 5, -1);
-    mgraph_add_edge(g, 5, 6, -1);
-    mgraph_add_edge(g, 0, 6, -1);
-    mgraph_add_edge(g, 3, 6, -1);
-    mgraph_add_edge(g, 6, 4, -1);
-    mgraph_add_edge(g, 1, 7, -1);
-    mgraph_add_edge(g, 0, 7, -1);
-    mgraph_add_edge(g, 7, 1, -1);
-    
-    mgraph_print(g);
+    mgraph_print(map->g);
 
-    struct mgraph *ride = shortest_ride(g, 0, 4);
+    struct mgraph *r = shortest_ride(map->g, 26, 8);
 
-    printf("vvvvvvvvvvvv\nvvv RIDE vvv\nvvvvvvvvvvvv\n");
+    printf("\n\n-- RIDE GRAPH --\n");
 
-    mgraph_print(ride);
+    mgraph_print(r);
+
+    printf("\n-- Pretty Print Ride --\n");
+
+    int current_line = r->stations[0]->adjs->next->idline;
+    int station_cpt = 0;
+    printf("Prendre %s à %s\n", map->lines[r->stations[0]->adjs->next->idline]->name, r->stations[0]->name);
+
+    for (int i = 0; i < r->order; i++)
+    {
+        if (i == r->order-1 || r->stations[i]->adjs->next->idline != current_line)
+        {
+            printf("Descendre à %s (%d stations)\n", r->stations[i]->name, station_cpt);
+            
+            if (i != r->order-1)
+            {
+                printf("Changement de ligne\n");
+                printf("Prendre %s à %s\n", map->lines[r->stations[i]->adjs->next->idline]->name, r->stations[i]->name);
+            }
+            else
+            {
+                printf("Vous êtes arrivés !\n");
+            }
+
+            station_cpt = 0;
+        }
+
+        if (i != r->order - 1)
+        {
+            current_line = r->stations[i]->adjs->next->idline;
+        }
+
+        station_cpt++;
+    }
 
     return 0;
 }

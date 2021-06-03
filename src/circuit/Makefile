@@ -25,7 +25,7 @@ list.o: ../../libs/map/list.c ../../libs/map/list.h
 	$(CC) $(DEBUG) -c $< -o $@
 
 clean:
-	rm -f *.o test
+	rm -f *.o main
 
 run:
 	./main
