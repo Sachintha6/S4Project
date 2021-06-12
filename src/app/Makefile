@@ -14,7 +14,7 @@ all: main
 main: $(COMMANDS)
 	$(CC) $(DEBUG) $(OBJECTS) $(LIBS) -o $@
 
-interface: main.c gui.h ../../libs/map/mapGraph.h ../../libs/map/list.h
+interface: main.c gui.h
 	$(CC) $(DEBUG) $(CFLAGS) -c $< -o $(OBJFOLDER)/$@.o
 
 print: gui_print.c gui.h
@@ -23,10 +23,10 @@ print: gui_print.c gui.h
 events: gui_events.c gui.h
 	$(CC) $(DEBUG) $(CFLAGS) -c $< -o $(OBJFOLDER)/$@.o
 
-ride: ../ride/ride.c ../ride/ride.h ../../libs/map/mapGraph.h ../../libs/map/list.h
+ride: ../ride/ride.c ../ride/ride.h
 	$(CC) $(DEBUG) $(CFLAGS) -c $< -o $(OBJFOLDER)/$@.o
 
-mapGraph: ../../libs/map/mapGraph.c ../../libs/map/mapGraph.h ../../libs/map/list.h
+mapGraph: ../../libs/map/mapGraph.c ../../libs/map/mapGraph.h
 	$(CC) $(DEBUG) -c $< -o $(OBJFOLDER)/$@.o
 
 list: ../../libs/map/list.c ../../libs/map/list.h

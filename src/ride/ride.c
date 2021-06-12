@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include "../../libs/map/mapGraph.h"
 #include "../../libs/map/list.h"
 
@@ -88,4 +89,15 @@ struct mgraph* shortest_ride(struct mgraph *g, int src, int dst)
     }
 
     return ride;
+}
+
+void get_stations(int stations[], char *val, struct mgraph *g)
+{
+    for (int i = 0; i < g->order; i++)
+    {
+        if (strcmp(val, g->stations[i]->name) == 0)
+        {
+            stations[0] = i; 
+        }
+    }
 }

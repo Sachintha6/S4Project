@@ -6,13 +6,16 @@
 typedef struct {
     GtkWidget *window; 
     GtkWidget *drawing_area;
+    GtkWidget *ride_area;
     GdkRGBA *newcolor;
     cairo_t *cr;
     cairo_surface_t *bg_image;
+    cairo_t *cride;
     
     double zoom;
     struct map *map;
     struct mgraph *ride;
+    int is_ride;
 } app_widgets;
 
 void update_title(app_widgets *app_wdgts);
