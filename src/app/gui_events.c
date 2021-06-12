@@ -3,8 +3,8 @@
 #include <string.h>
 #include <err.h>
 #include "gui.h"
-#include "../libs/map/mapGraph.h"
-#include "../libs/map/list.h"
+#include "../../libs/map/mapGraph.h"
+#include "../../libs/map/list.h"
 
 void on_menuitm_close_activate(GtkMenuItem *menuitem, app_widgets *app_wdgts)
 {

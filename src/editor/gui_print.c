@@ -3,8 +3,8 @@
 #include <stdio.h>
 #include <math.h>
 #include "gui.h"
-#include "../libs/map/mapGraph.h"
-#include "../libs/map/list.h"
+#include "../../libs/map/mapGraph.h"
+#include "../../libs/map/list.h"
 
 void on_draw(GtkWidget *widget, cairo_t *cr, app_widgets *app_wdgts)
 {

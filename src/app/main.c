@@ -2,8 +2,9 @@
 #include <cairo.h>
 #include <stdio.h>
 #include "gui.h"
-#include "../libs/map/mapGraph.h"
-#include "../libs/map/list.h"
+#include "../../libs/map/mapGraph.h"
+#include "../../libs/map/list.h"
+#include "../ride/ride.h"
 
 int main (int argc, char **argv)
 {
@@ -23,7 +24,7 @@ int main (int argc, char **argv)
     gtk_init(&argc, &argv);
 
     builder = gtk_builder_new ();
-    if (gtk_builder_add_from_file(builder, "../files/graphics/app.glade", &error) == 0)
+    if (gtk_builder_add_from_file(builder, "../../files/graphics/app.glade", &error) == 0)
     {
         g_printerr("Error loading file: %s\n", error->message);
         g_clear_error(&error);
@@ -41,7 +42,7 @@ int main (int argc, char **argv)
 
     /*****CSS****/
     GtkCssProvider *provider = gtk_css_provider_new ();
-    gtk_css_provider_load_from_path (provider, "../files/css/app.css", NULL);
+    gtk_css_provider_load_from_path (provider, "../../files/css/app.css", NULL);
 
     gtk_style_context_add_provider_for_screen(gdk_screen_get_default(),
                                 GTK_STYLE_PROVIDER(provider), 600);
@@ -52,13 +53,24 @@ int main (int argc, char **argv)
     g_object_unref(builder);
     gtk_widget_show(GTK_WIDGET(window));
 
-    widgets->map = mgraph_load("../files/data/paris.gra");
+    widgets->map = mgraph_load("../../files/data/paris.gra");
     //struct map *tmp = mgraph_load("../files/data/rmridetest.gra");
-    widgets->ride = mgraph_init(1, 10);
+    //widgets->ride = mgraph_init(1, 10);
+    widgets->ride = shortest_ride(widgets->map->g, 26, 8);
+    printf("\n\n-- RIDE GRAPH --\n");
+
+    mgraph_print(widgets->ride);
+
+
+
     widgets->bg_image = cairo_image_surface_create_from_png(widgets->map->backgroundImg);
 
     mgraph_print(widgets->map->g);
     mgraph_print(widgets->ride);
+
+
+
+
 
     gtk_main();
 

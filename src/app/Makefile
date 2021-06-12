@@ -3,32 +3,37 @@ CFLAGS = `pkg-config --cflags gtk+-3.0 gmodule-export-2.0 glib-2.0`
 LIBS   = `pkg-config --libs gtk+-3.0 gmodule-2.0 glib-2.0` -fsanitize=address
 DEBUG  = -Wall -g
 
-OBJECTS = interface.o print.o events.o mapGraph.o list.o
+COMMANDS = interface print events ride mapGraph list
+OBJFOLDER = ../../objects
+OBJECTS = $(OBJFOLDER)/interface.o $(OBJFOLDER)/print.o $(OBJFOLDER)/events.o $(OBJFOLDER)/ride.o $(OBJFOLDER)/mapGraph.o $(OBJFOLDER)/list.o
 
 .PHONY: clean
 
 all: main
 
-main: $(OBJECTS)
+main: $(COMMANDS)
 	$(CC) $(DEBUG) $(OBJECTS) $(LIBS) -o $@
 
-interface.o: main.c gui.h ../libs/map/mapGraph.h ../libs/map/list.h
-	$(CC) $(DEBUG) $(CFLAGS) -c $< -o $@
+interface: main.c gui.h ../../libs/map/mapGraph.h ../../libs/map/list.h
+	$(CC) $(DEBUG) $(CFLAGS) -c $< -o $(OBJFOLDER)/$@.o
 
-print.o: gui_print.c gui.h
-	$(CC) $(DEBUG) $(CFLAGS) -c $< -o $@
+print: gui_print.c gui.h
+	$(CC) $(DEBUG) $(CFLAGS) -c $< -o $(OBJFOLDER)/$@.o
 
-events.o: gui_events.c gui.h
-	$(CC) $(DEBUG) $(CFLAGS) -c $< -o $@
+events: gui_events.c gui.h
+	$(CC) $(DEBUG) $(CFLAGS) -c $< -o $(OBJFOLDER)/$@.o
 
-mapGraph.o: ../libs/map/mapGraph.c ../libs/map/mapGraph.h ../libs/map/list.h
-	$(CC) $(DEBUG) -c $< -o $@
+ride: ../ride/ride.c ../ride/ride.h ../../libs/map/mapGraph.h ../../libs/map/list.h
+	$(CC) $(DEBUG) $(CFLAGS) -c $< -o $(OBJFOLDER)/$@.o
 
-list.o: ../libs/map/list.c ../libs/map/list.h
-	$(CC) $(DEBUG) -c $< -o $@
+mapGraph: ../../libs/map/mapGraph.c ../../libs/map/mapGraph.h ../../libs/map/list.h
+	$(CC) $(DEBUG) -c $< -o $(OBJFOLDER)/$@.o
+
+list: ../../libs/map/list.c ../../libs/map/list.h
+	$(CC) $(DEBUG) -c $< -o $(OBJFOLDER)/$@.o
 
 clean:
-	rm -f *.o main
+	rm -f $(OBJFOLDER)/*.o main
 
 run:
 	./main

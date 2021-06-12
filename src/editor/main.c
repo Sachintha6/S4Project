@@ -2,8 +2,8 @@
 #include <cairo.h>
 #include <stdio.h>
 #include "gui.h"
-#include "../libs/map/mapGraph.h"
-#include "../libs/map/list.h"
+#include "../../libs/map/mapGraph.h"
+#include "../../libs/map/list.h"
 
 int main (int argc, char **argv)
 {
@@ -24,7 +24,7 @@ int main (int argc, char **argv)
     gtk_init(&argc, &argv);
 
     builder = gtk_builder_new ();
-    if (gtk_builder_add_from_file(builder, "../files/graphics/gui.glade", &error) == 0)
+    if (gtk_builder_add_from_file(builder, "../../files/graphics/gui.glade", &error) == 0)
     {
         g_printerr("Error loading file: %s\n", error->message);
         g_clear_error(&error);

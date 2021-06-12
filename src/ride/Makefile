@@ -3,29 +3,30 @@ CFLAGS = ``
 LIBS   = ``
 DEBUG  = -Wall -Wextra
 
-OBJECTS = test.o dijkstra.o mapGraph.o list.o
+OBJECTS = test.o ride.o mapGraph.o list.o
+OBJFOLDER = ../../objects
 
 .PHONY: clean
 
 all: main
 
 main: $(OBJECTS)
-	$(CC) $(DEBUG) $(OBJECTS) $(LIBS) -o $@
+	$(CC) $(DEBUG) $(OBJFOLDER)/test.o $(OBJFOLDER)/ride.o $(OBJFOLDER)/mapGraph.o $(OBJFOLDER)/list.o $(LIBS) -o $@
 
-test.o: test.c dijkstra.h ../../libs/map/mapGraph.h ../../libs/map/list.h
-	$(CC) $(DEBUG) $(CFLAGS) -c $< -o $@
+test.o: test.c ride.h ../../libs/map/mapGraph.h ../../libs/map/list.h
+	$(CC) $(DEBUG) $(CFLAGS) -c $< -o $(OBJFOLDER)/$@
 
-dijkstra.o: dijkstra.c dijkstra.h ../../libs/map/mapGraph.h ../../libs/map/list.h
-	$(CC) $(DEBUG) $(CFLAGS) -c $< -o $@
+ride.o: ride.c ride.h ../../libs/map/mapGraph.h ../../libs/map/list.h
+	$(CC) $(DEBUG) $(CFLAGS) -c $< -o $(OBJFOLDER)/$@
 
 mapGraph.o: ../../libs/map/mapGraph.c ../../libs/map/mapGraph.h ../../libs/map/list.h
-	$(CC) $(DEBUG) -c $< -o $@
+	$(CC) $(DEBUG) -c $< -o $(OBJFOLDER)/$@
 
 list.o: ../../libs/map/list.c ../../libs/map/list.h
-	$(CC) $(DEBUG) -c $< -o $@
+	$(CC) $(DEBUG) -c $< -o $(OBJFOLDER)/$@
 
 clean:
-	rm -f *.o main
+	rm -f $(OBJFOLDER)/*.o main
 
 run:
 	./main

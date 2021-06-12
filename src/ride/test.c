@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include "../../libs/map/mapGraph.h"
 #include "../../libs/map/list.h"
-#include "dijkstra.h"
+#include "ride.h"
 
 int main()
 {
