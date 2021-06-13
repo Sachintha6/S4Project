@@ -93,11 +93,43 @@ struct mgraph* shortest_ride(struct mgraph *g, int src, int dst)
 
 void get_stations(int stations[], char *val, struct mgraph *g)
 {
+    int cpt = 0;
+
     for (int i = 0; i < g->order; i++)
     {
         if (strcmp(val, g->stations[i]->name) == 0)
         {
-            stations[0] = i; 
+            stations[0] = i;
+            cpt++;
+        }
+    }
+
+    for (int i = 0; i < g->order; i++)
+    {
+        int diff = 0;
+        char* p2 = g->stations[i]->name;
+        char* p1 = val;
+
+        while (*p1 != '\0' && *p2 != '\0')
+        {
+            if (*p2 != *p1)
+            {
+                diff++;
+            }
+
+            p1++;
+            p2++;
+        }
+
+        if (diff <= 2)
+        {
+            if (cpt >= 4)
+            {
+                return;
+            }
+
+            stations[cpt] = i;
+            cpt++;
         }
     }
 }
