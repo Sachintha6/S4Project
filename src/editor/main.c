@@ -19,7 +19,10 @@ int main (int argc, char **argv)
     widgets->selected_sid = -1;
     widgets->map = (struct map*)malloc(sizeof(struct map));
     widgets->map->g = mgraph_init(1, 0);
-    widgets->map->name = "MUTN - Any Map";
+    widgets->map->name = "Unnamed Map";
+    widgets->map->current_line = (struct line*)malloc(sizeof(struct line*));
+    widgets->map->save_state = 0;
+    widgets->map->nblines = 0;
 
     gtk_init(&argc, &argv);
 

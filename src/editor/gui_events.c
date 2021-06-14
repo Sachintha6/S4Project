@@ -19,7 +19,7 @@ void on_menuitm_open_activate(GtkMenuItem *menuitem, app_widgets *app_wdgts)
             app_wdgts->map = mgraph_load(filename);
             app_wdgts->bg_image = cairo_image_surface_create_from_png(app_wdgts->map->backgroundImg);
 
-            mgraph_print(app_wdgts->map->g);
+            //mgraph_print(app_wdgts->map->g);
             gtk_widget_queue_draw(GTK_WIDGET(app_wdgts->drawing_area));
 
             for (int c = 0; c < app_wdgts->map->nblines; c++)
@@ -346,7 +346,7 @@ void on_da_click(GtkWidget *widget, GdkEventButton *event, app_widgets *app_wdgt
         }
     }
 
-    mgraph_print(app_wdgts->map->g);
+    //mgraph_print(app_wdgts->map->g);
     app_wdgts->map->save_state = 1;
 
     update_title(app_wdgts);

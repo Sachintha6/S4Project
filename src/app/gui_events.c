@@ -41,7 +41,7 @@ void on_search_clicked(GtkToolButton *button, app_widgets *app_wdgts)
 {
     app_wdgts->ride = shortest_ride(app_wdgts->map->g, app_wdgts->id_departure, app_wdgts->id_arrival);
     printf("\n\n-- RIDE GRAPH --\n");
-    mgraph_print(app_wdgts->ride);
+    //mgraph_print(app_wdgts->ride);
     app_wdgts->is_ride = 1;
 
     gtk_widget_hide(GTK_WIDGET(app_wdgts->input_labels));

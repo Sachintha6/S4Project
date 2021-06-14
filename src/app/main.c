@@ -69,7 +69,7 @@ int main (int argc, char **argv)
     gtk_widget_hide(GTK_WIDGET(widgets->input_labels));
 
     widgets->map = mgraph_load("../../files/data/paris.gra");
-    mgraph_print(widgets->map->g);
+    //mgraph_print(widgets->map->g);
     widgets->bg_image = cairo_image_surface_create_from_png(widgets->map->backgroundImg);
 
     gtk_main();
