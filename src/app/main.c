@@ -19,6 +19,8 @@ int main (int argc, char **argv)
     widgets->newcolor = (GdkRGBA*)malloc(sizeof(GdkRGBA));
     widgets->zoom = 30.0;
     widgets->is_ride = 0;
+    widgets->id_arrival = 0;
+    widgets->id_departure = 0;
     widgets->map = (struct map*)malloc(sizeof(struct map));
     widgets->map->g = mgraph_init(1, 0);
     widgets->ride = mgraph_init(0, 0);
@@ -34,10 +36,22 @@ int main (int argc, char **argv)
         return 1;
     }
 
-    window = gtk_builder_get_object(builder, "Interface");
-
     // Get objects from UI
+    window = gtk_builder_get_object(builder, "Interface");
     widgets->window = GTK_WIDGET(window);
+    widgets->input_labels = GTK_WIDGET(gtk_builder_get_object(builder, "input-labels"));
+    
+    widgets->lab[0] = GTK_WIDGET(gtk_builder_get_object(builder, "label1"));
+    widgets->lab[1] = GTK_WIDGET(gtk_builder_get_object(builder, "label2"));
+    widgets->lab[2] = GTK_WIDGET(gtk_builder_get_object(builder, "label3"));
+    widgets->lab[3] = GTK_WIDGET(gtk_builder_get_object(builder, "label4"));
+    //gtk_label_set_text(GTK_LABEL(widgets->lab1), "Blabla1");
+    //gtk_label_set_text(GTK_LABEL(widgets->lab]), "Blabla4");
+
+    widgets->inputdeparture = GTK_WIDGET(gtk_builder_get_object(builder, "entry1"));
+    widgets->inputarrival = GTK_WIDGET(gtk_builder_get_object(builder, "entry2"));
+    widgets->fixed = GTK_WIDGET(gtk_builder_get_object(builder, "fixed1"));
+
     da_obj = gtk_builder_get_object(builder, "map-drawing");
     widgets->drawing_area = GTK_WIDGET(da_obj);
     widgets->bg_image = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, 10, 10);
@@ -52,6 +66,7 @@ int main (int argc, char **argv)
     gtk_builder_connect_signals(builder, widgets);
     g_object_unref(builder);
     gtk_widget_show(GTK_WIDGET(window));
+    gtk_widget_hide(GTK_WIDGET(widgets->input_labels));
 
     widgets->map = mgraph_load("../../files/data/paris.gra");
     mgraph_print(widgets->map->g);

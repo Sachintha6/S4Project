@@ -104,6 +104,9 @@ void get_stations(int stations[], char *val, struct mgraph *g)
         }
     }
 
+    if (strlen(val) <= 2)
+        return;
+
     for (int i = 0; i < g->order; i++)
     {
         int diff = 0;
@@ -121,7 +124,7 @@ void get_stations(int stations[], char *val, struct mgraph *g)
             p2++;
         }
 
-        if (diff <= 2)
+        if (diff <= 2 && i != stations[0])
         {
             if (cpt >= 4)
             {

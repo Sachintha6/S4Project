@@ -50,6 +50,7 @@
                         <signal name="clicked" handler="on_zoomOut_clicked" swapped="no"/>
                         <style>
                             <class name="zoom-btn"/>
+                            <class name="zoom-m-btn"/>
                         </style>
                     </object>
                     <packing>
@@ -72,6 +73,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="invisible_char">●</property>
+                                <signal name="changed" handler="on_departure_changed" swapped="no"/>
                                 <style>
                                     <class name="input"/>
                                 </style>
@@ -112,6 +114,115 @@
                     <packing>
                         <property name="x">292</property>
                         <property name="y">395</property>
+                    </packing>
+                </child>
+
+
+               <!----> <child>
+                    <object class="GtkVBox" id="input-labels">
+                        <property name="width_request">200</property>
+                        <!--<property name="height_request">80</property>-->
+                        <property name="visible">True</property>
+
+                        <child>
+                            <object class="GtkEventBox" id="eventbox4">
+                                <property name="visible">True</property>
+                                <child>
+                                <object class="GtkLabel" id="label4">
+                                    <property name="visible">True</property>
+                                    <property name="app_paintable">True</property>
+                                    <property name="xalign">0</property>
+                                    <property name="label" translatable="yes">label</property>
+                                    <property name="wrap">True</property>
+                                    <property name="wrap_mode">char</property>
+                                    <style>
+                                        <class name="station-label"/>
+                                    </style>
+                                </object>
+                                </child>
+                                <signal name="button_press_event" handler="on_label4_clicked" swapped="no"/>
+                            </object>
+                            <packing>
+                                <property name="position">2</property>
+                            </packing>
+                        </child>
+
+                        <child>
+                            <object class="GtkEventBox" id="eventbox3">
+                                <property name="visible">True</property>
+                                <child>
+                                <object class="GtkLabel" id="label3">
+                                    <property name="visible">True</property>
+                                    <property name="app_paintable">True</property>
+                                    <property name="xalign">0</property>
+                                    <property name="label" translatable="yes">label</property>
+                                    <property name="wrap">True</property>
+                                    <property name="wrap_mode">char</property>
+                                    <style>
+                                        <class name="station-label"/>
+                                    </style>
+                                </object>
+                                </child>
+                                <signal name="button_press_event" handler="on_label3_clicked" swapped="no"/>
+                            </object>
+                            <packing>
+                                <property name="position">2</property>
+                            </packing>
+                        </child>
+
+                        <child>
+                            <object class="GtkEventBox" id="eventbox2">
+                                <property name="visible">True</property>
+                                <child>
+                                <object class="GtkLabel" id="label2">
+                                    <property name="visible">True</property>
+                                    <property name="app_paintable">True</property>
+                                    <property name="xalign">0</property>
+                                    <property name="label" translatable="yes">label</property>
+                                    <property name="wrap">True</property>
+                                    <property name="wrap_mode">char</property>
+                                    <style>
+                                        <class name="station-label"/>
+                                    </style>
+                                </object>
+                                </child>
+                                <signal name="button_press_event" handler="on_label_clicked" swapped="no"/>
+                            </object>
+                            <packing>
+                                <property name="position">2</property>
+                            </packing>
+                        </child>
+
+                        <child>
+                            <object class="GtkEventBox" id="eventbox1">
+                                <property name="visible">True</property>
+                                <child>
+                                <object class="GtkLabel" id="label1">
+                                    <property name="visible">True</property>
+                                    <property name="app_paintable">True</property>
+                                    <property name="xalign">0</property>
+                                    <property name="label" translatable="yes">label</property>
+                                    <property name="wrap">True</property>
+                                    <property name="wrap_mode">char</property>
+                                    <style>
+                                        <class name="station-label"/>
+                                    </style>
+                                </object>
+                                </child>
+                                <signal name="button_press_event" handler="on_label_clicked" swapped="no"/>
+                            </object>
+                            <packing>
+                                <property name="position">2</property>
+                            </packing>
+                        </child>
+                        
+                        <style>
+                            <class name="input-labels"/>
+                        </style>
+                    </object>
+                    <packing>
+                        <property name="x">90</property>
+                        <property name="y">450</property>
                     </packing>
                 </child>
             </object>
