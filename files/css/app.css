@@ -27,6 +27,9 @@
     color: #333333;
 	padding: 9px 15px 5px 60px;
 }
+.input-arr{
+    background-image: url("../graphics/icon-arrival.png");
+}
 .sc-input{
     border-radius: 11px;
     padding: 7px 11px;

@@ -87,6 +87,7 @@
                                 <signal name="changed" handler="on_arrival_changed" swapped="no"/>
                                 <style>
                                     <class name="input"/>
+                                    <class name="input-arr"/>
                                 </style>
                             </object>
                         </child>
@@ -113,7 +114,7 @@
                     </object>
                     <packing>
                         <property name="x">292</property>
-                        <property name="y">395</property>
+                        <property name="y">396</property>
                     </packing>
                 </child>
 
